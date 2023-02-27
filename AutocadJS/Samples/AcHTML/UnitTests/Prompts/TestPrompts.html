@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="http://www.autocadws.com/jsapi/v1/Autodesk.AutoCAD.js"></script>
+<script type="text/javascript" src="TestPrompts.js"></script>
+    
+<style type="text/css">
+  td, body {font-family: sans-serif; font-size: 10pt;}
+  body {background-image:url(background2.png); 
+        background-color: #686868; 
+        padding:0;
+        margin:5px 5px 5px 5px; 
+        color:#FFF; }
+</style>    
+</head>
+<body>
+    <input type='button' onclick='window.location.reload()' value='Reload' />
+    <hr />
+    <form name="Prompt">
+    <!-- ****************** PROMPT FOR USER INPUT ****************** -->
+    <input type='button' onclick='promptForUserInput()' value='Prompt for user input!' />
+    <hr />
+    <!-- ****************** SELECT PROMPT TYPE ****************** -->
+    <table border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <th width="150">
+                Select prompt type:
+            </th>
+            <td>
+                <select id="promptType" onchange="onPromptTypeChanged()">
+                    <option value="PromptCorner" selected="selected">PromptCorner</option>
+                    <option value="PromptPoint">PromptPoint</option>
+					<option value="PromptInteger">PromptInteger</option>
+					<option value="PromptDouble">PromptDouble</option>
+					<option value="PromptDistance">PromptDistance</option>
+					<option value="PromptAngle">PromptAngle</option>
+					<option value="PromptString">PromptString</option>
+					<option value="PromptKeyword">PromptKeyword</option>
+					<option value="PromptFileNameForOpen">PromptFileNameForOpen</option>
+                    <option value="PromptFileNameForSave">PromptFileNameForSave</option>
+                </select>
+            </td>
+        </tr>
+    </table>
+    <hr />
+    <!-- ****************** PARAMETERS ****************** -->
+    <table border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <th width="150">
+                Message & Keywords:
+            </th>
+            <td>
+                <input type="text" id='messageAndKeywords' size="50" value="Select corner point [Rectangle/Circle/Line]">
+            </td>
+        </tr>
+        <tr>
+            <th width="150">
+                Global Keywords:
+            </th>
+            <td>
+                <input type="text" id='globalKeywords' size="50" value="Rectangle Circle Line">
+            </td>
+        </tr>
+        <tr>
+            <th width="150">
+                Allow None:
+            </th>
+            <td>
+                <input type="checkbox" id='allowNone' checked />
+            </td>
+        </tr>
+        <tr>
+            <th width="150">
+                Allow Arbitrary Input:
+            </th>
+            <td>
+                <input type="checkbox" id='allowArbitraryInput' />
+            </td>
+        </tr>
+        <tr>
+            <th width="150">
+                Use Dashed Line:
+            </th>
+            <td>
+                <input type="checkbox" id='useDashedLine' />
+            </td>
+        </tr>
+        <tr>
+            <th width="150">
+                Limits Checked:
+            </th>
+            <td>
+                <input type="checkbox" id='limitsChecked' checked />
+            </td>
+        </tr>
+        <tr>
+            <th width="150">
+                Use Base Point:
+            </th>
+            <td>
+                <input type="checkbox" id='useBasePoint' disabled='disabled' />
+            </td>
+        </tr>
+        <tr>
+            <th width="150">
+                Base Point:
+            </th>
+            <td>
+                <table border="0" cellpadding="0" cellspacing="0">
+                    <td>
+                        <input type="text" id='basePointX' size="12" value="0.0">
+                    </td>
+                    <td>
+                        <input type="text" id='basePointY' size="12" value="0.0">
+                    </td>
+                    <td>
+                        <input type="text" id='basePointZ' size="12" value="0.0">
+                    </td>
+                </table>
+            </td>
+        </tr>			
+        <tr>
+            <th width="150">
+                Allow Negative:
+            </th>
+            <td>
+                <input type="checkbox" id='allowNegative' disabled='disabled' />
+            </td>
+        </tr>	
+		<tr>
+            <th width="150">
+                Allow Zero:
+            </th>
+            <td>
+                <input type="checkbox" id='allowZero' disabled='disabled' />
+            </td>
+        </tr>
+		<tr>
+            <th width="150">
+                Use Default Value:
+            </th>
+            <td>
+                <input type="checkbox" id='useDefaultValue' disabled='disabled' />
+            </td>
+        </tr>
+		<tr>
+            <th width="150">
+                Default Value:
+            </th>
+            <td>
+                <input type="text" id='defaultValue' size="50" value="">
+            </td>
+        </tr>		
+	    <tr>
+            <th width="150">
+                Lower/Upper Limits Checked:
+            </th>
+            <td>
+                <input type="checkbox" id='lowerUpperLimitsChecked' disabled='disabled' />
+            </td>
+        </tr>
+		<tr>
+            <th width="150">
+                Lower Limit:
+            </th>
+            <td>
+                <input type="text" id='lowerLimit' size="50" value="-100">
+            </td>
+        </tr>
+		<tr>
+            <th width="150">
+                Upper Limit:
+            </th>
+            <td>
+                <input type="text" id='upperLimit' size="50" value="100">
+            </td>
+        </tr>	
+	    <tr>
+            <th width="150">
+                useAngleBase:
+            </th>
+            <td>
+                <input type="checkbox" id='useAngleBase' disabled='disabled' />
+            </td>
+        </tr>	
+		<tr>
+            <th width="150">
+                Allow Spaces:
+            </th>
+            <td>
+                <input type="checkbox" id='allowSpaces' disabled='disabled' />
+            </td>
+        </tr>	
+		<tr>
+            <th width="150">
+                Only2d:
+            </th>
+            <td>
+                <input type="checkbox" id='only2d' disabled='disabled' />
+            </td>
+        </tr>
+		<tr>
+            <th width="150">
+                Message:
+            </th>
+            <td>
+                <input type="text" id='message' size="50" value="Open File">
+            </td>
+        </tr>
+		<tr>
+            <th width="150">
+                Dialog Caption:
+            </th>
+            <td>
+                <input type="text" id='dialogCaption' size="50" value="Dialog Caption">
+            </td>
+        </tr>
+		<tr>
+            <th width="150">
+                Dialog Name:
+            </th>
+            <td>
+                <input type="text" id='dialogName' size="50" value="Dialog Name">
+            </td>
+        </tr>
+		<tr>
+            <th width="150">
+                Filter:
+            </th>
+            <td>
+                <input type="text" id='filter' size="50" value="All files (*.*)|*.*">
+            </td>
+        </tr>
+		<tr>
+            <th width="150">
+                Filter Index:
+            </th>
+            <td>
+                <input type="text" id='filterIndex' size="3" value="0">
+            </td>
+        </tr>
+		<tr>
+            <th width="150">
+                Initial FileName:
+            </th>
+            <td>
+                <input type="text" id='initialFileName' size="50" value="notepad.exe">
+            </td>
+        </tr>
+		<tr>
+            <th width="150">
+                Initial Directory:
+            </th>
+            <td>
+                <input type="text" id='initialDirectory' size="50" value="C:\\Windows\">
+            </td>
+        </tr>
+		<tr>
+            <th width="150">
+                Allow Urls:
+            </th>
+            <td>
+                <input type="checkbox" id='allowUrls' disabled='disabled' />
+            </td>
+        </tr>
+		<tr>
+            <th width="150">
+                Prefer CommandLine:
+            </th>
+            <td>
+                <input type="checkbox" id='preferCommandLine' disabled='disabled' />
+            </td>
+        </tr>
+		<tr>
+            <th width="150">
+                Show ReadOnly
+            </th>
+            <td>
+                <input type="checkbox" id='showReadOnly' disabled='disabled' />
+            </td>
+        </tr>
+		<tr>
+            <th width="150">
+                Search Path:
+            </th>
+            <td>
+                <input type="checkbox" id='searchPath' disabled='disabled' />
+            </td>
+        </tr>
+		<tr>
+            <th width="150">
+                Transfer Remote Files:
+            </th>
+            <td>
+                <input type="checkbox" id='transferRemoteFiles' disabled='disabled' />
+            </td>
+        </tr>
+
+		<tr>
+            <th width="150">
+                Derive Initial Filename From Drawing Name
+            </th>
+            <td>
+                <input type="checkbox" id='deriveInitialFilenameFromDrawingName' disabled='disabled' />
+            </td>
+        </tr>
+		<tr>
+            <th width="150">
+                Display Save Options MenuItem:
+            </th>
+            <td>
+                <input type="checkbox" id='displaySaveOptionsMenuItem' disabled='disabled' />
+            </td>
+        </tr>
+		<tr>
+            <th width="150">
+                Force Overwrite Warning ForScripts & Lisp:
+            </th>
+            <td>
+                <input type="checkbox" id='forceOverwriteWarningForScriptsAndLisp' disabled='disabled' />
+            </td>
+        </tr>
+    </table>
+    </form>
+    <hr />
+    <!-- ****************** RESULTS ****************** -->
+    <table border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <th width="150">
+                jsonResult
+            </th>
+            <td>
+                <input type='text' id='jsonResult' value='empty' readonly='readonly' size="200" />
+            </td>
+        </tr>    
+        <tr>
+            <th width="150">
+                status
+            </th>
+            <td>
+                <input type='text' id='resultStatus' value='empty' readonly='readonly' />
+            </td>
+        </tr>
+        <tr>
+            <th width="150">
+                stringResult
+            </th>
+            <td>
+                <input type='text' id='stringResult' value='empty' readonly='readonly' />
+            </td>
+        </tr>
+        <tr>
+            <th width="150">
+                value
+            </th>
+            <td>
+                <input type='text' id='resultValue' value='empty' readonly='readonly' />
+            </td>
+        </tr>
+    </table>
+    
+    
+    
+    <!-- ****************** SecureFile related stuff ****************** -->
+    <!--hr />
+    <table border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <th width="150">
+                SecureFile guid
+            </th>
+            <td>
+                <input type='text' id='guid' value='Paste guid from getFileNameForOpen/Save here!' size='50' />
+                <input type='button' onclick='releaseGUID()' value='release GUID' />
+            </td>
+        </tr>    
+        <tr>
+            <th>
+                <input type='button' onclick='getContents()' value='getContents()' />
+            </th>
+            <td id='contents'>
+                <img id='getContentsImage' rows='200' cols='200'/>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <input type='button' onclick='setContents()' value='setContents()' />
+            </th>
+            <td>
+                <canvas id="setContentsCanvas" width="200" height="200" />
+            </td>
+        </tr>
+    </table-->
+    <hr />
+</body>
+</html>

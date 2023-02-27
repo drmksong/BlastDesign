@@ -1,0 +1,48 @@
+<html>
+<head>
+<title>AutoCAD JavaScript Capture Preview API Test</title>
+<script type="text/javascript" src="http://www.autocadws.com/jsapi/v1/Autodesk.AutoCAD.js"></script>
+<script type="text/javascript" src="TestPreview.js" ></script>
+
+<style type="text/css">
+  td, body {font-family: sans-serif; font-size: 10pt;}
+  body {background-image:url(background2.png); 
+        background-color: #686868; 
+        padding:0;
+        margin:5px 5px 5px 5px; 
+        color:#FFF; }
+</style>
+
+</head>
+<body>
+
+<input type='button' onclick='window.location.reload()' value='Reload' /><br />
+
+<br />
+
+<h3>Capture Preview</h3>
+
+<table border="0">
+<tr>
+    <td align='left'>Image Width x Height</td>
+</tr>
+<tr>
+    <td>
+    <input type='text' size= '6' id='Width' value='200' title='Specify image width'/>
+    <input type='text' size= '6' id='Height' value='200' title='Specify image height'/>
+    </td>
+</tr>
+<tr>
+    <td>
+    <input type='button' onclick='capturePreview()' value='Capture Preview' title='Allows the caller to take a snapshot of the canvas of the current document'/>
+    </td>
+</tr>
+</table>
+
+<br />
+<hr />
+
+<div id='imageContainer'></div>
+
+</body>
+</html>

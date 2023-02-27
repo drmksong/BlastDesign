@@ -1,0 +1,40 @@
+<html>
+<head>
+<script type="text/javascript" src="http://www.autocadws.com/jsapi/v1/Autodesk.AutoCAD.js"></script>
+<script type="text/javascript" src="ArxJsTest.js"></script>
+<script type="text/javascript">
+
+////////////////////////////////////////////////////////////////////////////////////
+//
+//
+////////////////////////////////////////////////////////////////////////////////////
+function onLoad(){
+    write("Greetings from JavaScript! Html Page Loaded...");
+}
+
+</script>
+
+<style type="text/css">
+  td, body {font-family: sans-serif; font-size: 10pt;}
+  body {background-image:url(background.jpg); 
+        background-repeat:repeat-y; 
+        background-color: #686868; 
+        padding:0;
+        margin:5px 5px 5px 5px; 
+        color:#FFF; }
+  textarea {font-family: Consolas; font-size: 8pt; }
+  .status_text {background-color: #000; color:#0F0}
+</style>
+
+</head>
+
+<body onload="onLoad()">
+
+<p id='status_text' class='status_text'>
+</p>
+
+<input type='button' style='width: 150px' onclick='InvokeRead()' value='Invoke Read' /><br />
+<input type='button' style='width: 150px' onclick='InvokeWrite()' value='Invoke Write' /><br />
+
+</body>
+</html>

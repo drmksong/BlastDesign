@@ -1,0 +1,99 @@
+<html>
+<head>
+<script type="text/javascript" src="http://www.autocadws.com/jsapi/v1/Autodesk.AutoCAD.js"></script>
+<script type="text/javascript" src="misc.js"></script>
+<script type="text/javascript">
+
+////////////////////////////////////////////////////////////////////////////////////
+//
+//
+////////////////////////////////////////////////////////////////////////////////////
+function onLoad(){
+    write("Greetings from JavaScript! Html Page Loaded...");
+}
+
+function loadJs() {
+    load(document.getElementById('jsload').value);
+}
+
+function execJs() {
+    eval(jsfield.value);
+}
+
+function navigate() {
+    window.location = document.getElementById('url').value;
+}
+
+function InvokeAsync()
+{
+   var res = exec(JSON.stringify({ functionName: 'TestJsFunc', invokeAsCommand: false, functionParams: 'params' }));
+   alert("Result:" + res);
+}
+
+</script>
+
+<style type="text/css">
+  td, body {font-family: sans-serif; font-size: 10pt;}
+  body {background-image:url(background.jpg); 
+        background-repeat:repeat-y; 
+        background-color: #686868; 
+        padding:0;
+        margin:5px 5px 5px 5px; 
+        color:#FFF; }
+  textarea {font-family: Consolas; font-size: 8pt; }
+  .status_text {background-color: #000; color:#0F0}
+</style>
+
+</head>
+
+<body onload="onLoad()">
+
+<p id='status_text' class='status_text'>
+</p>
+
+<input type='button' onclick='window.location.reload()' value='Reload' /><br />
+
+<br />
+<hr /> <!-------------------------------------->
+
+<input type='text' id='url' value='http://www.liberateyourapps.com/acadwebappdemo/' />
+<input type='button' style='width: 45px' onclick='navigate()' value='Go' /><br />
+
+<input type='text' id='jsload' value='Load Js Script' onfocus="this.value=''" />
+<input type='button' style='width: 45px' onclick='loadJs()' value='Load' /><br />
+
+<hr /> <!-------------------------------------->
+
+<textarea id='jsfield' rows='10' cols='30'>
+// Enter some JavaScript code 
+// to execute.
+</textarea>
+<br />
+<input type='button' style='width: 205px' onclick='execJs()' value='Run JavaScript' />
+
+<hr /> <!-------------------------------------->
+
+<input type='button' onclick='ShowModalDialog()' value='Show Modal Dialog' style="width:150px"/>
+<input type='text' id='modal_dlg_url' value='http://www.autodesk.com' /><br />
+
+<input type='button' onclick='ShowTaskDialog()' value='Show Task Dialog' style="width:150px"/>
+<hr /> <!-------------------------------------->
+
+
+<input type='button' onclick='loginA360()' value='Login 360' />
+
+<hr /> <!-------------------------------------->
+
+<input type='button' id='defJsCommandBtn' onclick='DefineJsCommand()' value='Define Command' />
+
+<hr /> <!-------------------------------------->
+
+<input type='button' id='highlightBtn' onclick='HighlightTest()' value='Highlight Entity'/>
+
+<hr /> <!-------------------------------------->
+
+<input type='button' id='executeCmdBtn' onclick='executeCommand()' value='Execute Command'/><br />
+<input type='button' id='executeCmdAsyncBtn' onclick='executeCommandAsync()' value='Execute Command (Async)'/>
+
+</body>
+</html>

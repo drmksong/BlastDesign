@@ -1,0 +1,113 @@
+<html>
+<head>
+<script type="text/javascript" src="http://www.autocadws.com/jsapi/v1/Autodesk.AutoCAD.js"></script>
+<script type="text/javascript" src="testview.js" ></script>
+
+<style type="text/css">
+  td, body {font-family: sans-serif; font-size: 10pt;}
+  body {background-image:url(background.jpg); 
+        background-repeat:repeat-y; 
+        background-color: #686868; 
+        padding:0;
+        margin:5px 5px 5px 5px; 
+        color:#FFF; }
+  textarea {font-family: Consolas; font-size: 8pt; }
+  .status_text {background-color: #000; color:#0F0}
+</style>
+
+</head>
+
+<body>
+
+<hr /> <!-------------------------------------->
+
+<input type='button' onclick='zoom()' value='Zoom ' class='btn' style='width: 100px'/><br />
+
+<input type='button' onclick='zoomExtents()' value='Zoom Extents' class='btn' style='width: 100px'/><br />
+
+<input type='button' onclick='zoomWindow()' value='Zoom Window' class='btn' style='width: 100px'/><br />
+
+<hr /> <!-------------------------------------->
+
+<input type='button' onclick='pointToScreen()' value='Point To Screen (Select Point and see Screen Pixels Below)' class='btn' style='width: 400px'/><br />
+
+Screen Pixel x : <input type='text' id='pixelX'  size="10" /> Y : <input type='text' id='pixelY'  size="10" /> <br/>
+
+<br/>
+
+<br/>
+
+<input type='button' onclick='pointToWorld()' value='Point To World (Input Pixel Above Click see WCS below)' class='btn' style='width: 400px'/><br />
+
+WCS x : <input type='text' id='worldX'  size="10" /> Y : <input type='text' id='worldY'  size="10" /> Z : <input type='text' id='worldZ'  size="10" /> <br>
+
+<hr /> <!-------------------------------------->
+<input type='button' onclick='getView()' value='Get View' class='btn' style='width: 70px'/><br />
+<input type='button' onclick='setView()' value='Set View' class='btn' style='width: 70px'/><br />
+<input type='button' onclick='clearView()' value='Clear' class='btn' style='width: 70px'/><br />
+Animate: <input id="animate" type='checkbox' checked class='btn' /><br />
+<br />
+
+<br />
+Position: <br />
+x : <input type='text' id='p.x'   size="10"/> <br/>
+y : <input type='text' id='p.y'  size="10"/> <br/>
+z : <input type='text' id='p.z'  size="10" /> <br/>
+
+<br/>
+
+<br/>
+
+Target: <br />
+x : <input type='text' id='t.x'   size="10" /> <br />
+y : <input type='text' id='t.y' size="10" /> <br />
+z : <input type='text' id='t.z' size="10" /> <br>
+
+<br/>
+
+<br/>
+
+UpVector: <br />
+x : <input type='text' id='u.x'  size="10" /> <br />
+y : <input type='text' id='u.y'  size="10"/> <br />
+z : <input type='text' id='u.z'  size="10"/> <br>
+
+<br/>
+
+<br/>
+
+FieldHeight: <br />
+<input type='text' id='fh'  size="10" /><br>
+
+FieldWidth: <br />
+<input type='text' id='fw'  size="10" /><br>
+
+Projection: (0-Parallel, 1-Perspective)<br />
+<input type='text' id='proj'  size="2" /> <br>
+
+<hr /> <!-------------------------------------->
+
+<input type='button' onclick='getViewport()' value='Get Viewport Pixels' class='btn' /><br />
+
+Lower Left  : <input type='text' id='viewportmin'  size="10" /> <br />
+UpperRight: <input type='text' id='viewportmax'  size="10" />
+
+<hr /> <!-------------------------------------->
+
+<input type='button' onclick='roll()' value='Roll' class='btn' style='width: 100px'/> 
+Roll Angle(Radians) : <input type='text' id='rollAngle'  size="10" /> <br> 
+
+<input type='button' onclick='orbit()' value='Orbit' class='btn' style='width: 100px'/>
+Orbit AngleX(Radians) : <input type='text' id='angleXOrbit'  size="10" /> 
+AngleY(Radians) : <input type='text' id='angleYOrbit'  size="10" /> <br />
+
+<input type='button' onclick='pan()' value='Pan' class='btn' style='width: 100px'/>
+Pan AngleX(Radians) : <input type='text' id='angleXPan'  size="10" /> 
+AngleY(Radians) : <input type='text' id='angleYPan'  size="10" /><br />
+
+<br />
+
+<hr /> <!-------------------------------------->
+
+</body>
+</html>

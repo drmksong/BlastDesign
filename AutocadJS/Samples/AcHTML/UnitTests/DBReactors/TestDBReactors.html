@@ -1,0 +1,39 @@
+<html>
+<head>
+
+<title>Testing for Database Reactors in javascript</title>
+<script type="text/javascript" src="http://www.autocadws.com/jsapi/v1/Autodesk.AutoCAD.js"></script>
+<script type="text/javascript" src="TestDBReactors.js"></script>
+        
+<style type="text/css">
+  td, body {font-family: sans-serif; font-size: 10pt;}
+  body {background-color: #686868; 
+        padding:0;
+        margin:5px 5px 5px 5px; 
+        color:#FFF; }
+</style>    
+    
+</head>
+
+<body onload="StopObserving()">
+
+    <!-- ****************** PROMPT FOR USER INPUT ****************** -->
+    <input type='button' onclick='SelectEntity()' style='width: 100px' value='Add Listener' />
+    <br />
+    <input type='button' onclick='StopObserving()' style='width: 100px' value='Clear Listeners' />
+    <hr />
+    
+    Observed Entities:
+    <br/>
+    <textarea id='TextIds' rows='10' cols='30' readonly="readonly">
+    </textarea>
+    
+    <hr />  
+    
+    Events Log:
+    <br/>
+    <textarea id='TextLog' rows='10' cols='30' readonly="readonly">
+    </textarea>
+    
+</body>
+</html>

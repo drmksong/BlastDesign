@@ -1,0 +1,78 @@
+<html>
+<head>
+<script type="text/javascript" src="http://www.autocadws.com/jsapi/v1/Autodesk.AutoCAD.js"></script>
+<script type="text/javascript" src="TestSysvar.js" ></script>
+
+<style type="text/css">
+  td, body {font-family: sans-serif; font-size: 10pt;}
+  body {background-image:url(background.jpg); 
+        background-repeat:repeat-y; 
+        background-color: #686868; 
+        padding:0;
+        margin:5px 5px 5px 5px; 
+        color:#FFF; }
+  textarea {font-family: Consolas; font-size: 8pt; }
+  .status_text {background-color: #000; color:#0F0}
+</style>
+
+</head>
+
+<body onload="load()">
+
+<hr /> <!-------------------------------------->
+
+<h3>System Variable Demo</h3>
+
+<input type='text' id='sysvarname' value='Enter variable name here' onfocus="this.value=''" />
+<input type='button' onclick='getSysvar()' value='Get Value' class='btn' /><br />
+
+<input type='text' id='sysvar_newvalue' value='New value' onfocus="this.value=''" /><br />
+<input type='text' id='sysvar_newvalue_x' value='New value point x' onfocus="this.value=''" /><br />
+<input type='text' id='sysvar_newvalue_y' value='New value point y' onfocus="this.value=''" /><br />
+<input type='text' id='sysvar_newvalue_z' value='New value point z' onfocus="this.value=''" /><br />
+
+<!--input type='button' onclick='postSysvarValue()' value='Post Value' class='btn' /><br /-->
+<input type='button' onclick='setSysvarValue()' value='Set Value' class='btn' style="width:160px"/><br />
+<input type='button' onclick='addListener()' value='Add Listener' class='btn' style="width:160px"/><br />
+<input type='button' onclick='removeListener()' value='Remove Listener' class='btn' style="width:160px"/><br />
+
+    <!-- ****************** RESULTS ****************** -->
+    <table border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <th width="150">Name</th>
+            <td><input type='text' id='SystemVariable_name' value='empty' readonly='readonly' /></td>
+        </tr>
+        <tr>
+            <th width="150">Value Type</th>
+            <td><input type='text' id='SystemVariable_valueType' value='empty' readonly='readonly' /></td>
+        </tr>
+        <tr>
+            <th width="150">Value</th>
+            <td><input type='text' id='SystemVariable_value' value='empty' readonly='readonly' /></td>
+        </tr>
+        <tr>
+            <th width="150">Is Active</th>
+            <td><input type='text' id='SystemVariable_isActive' value='empty' readonly='readonly' /></td>
+        </tr>
+        <tr>
+            <th width="150">Minimum</th>
+            <td><input type='text' id='SystemVariable_minmum' value='empty' readonly='readonly' /></td>
+        </tr>
+        <tr>
+            <th width="150">Maximum</th>
+            <td><input type='text' id='SystemVariable_maximum' value='empty' readonly='readonly' /></td>
+        </tr>
+		<tr>
+            <th width="200">Value Changed callback</th>
+            <td><input type='text' id='onValueChanged' value='empty' readonly='readonly' /></td>
+        </tr>
+        <tr>
+            <th width="250">Activated Changed callback</th>
+            <td><input type='text' id='onActivatedChanged' value='empty' readonly='readonly' /></td>
+        </tr>
+    </table>
+	
+<hr /> <!-------------------------------------->
+
+</body>
+</html>

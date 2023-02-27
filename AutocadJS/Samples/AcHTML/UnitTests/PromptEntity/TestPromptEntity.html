@@ -1,0 +1,121 @@
+<html>
+<head>
+<title>Testing for PromptEntityOptions in javascript shaping layer</title>
+<script type="text/javascript" src="http://www.autocadws.com/jsapi/v1/Autodesk.AutoCAD.js"></script>
+<script type="text/javascript" src="TestPromptEntity.js"></script>
+    
+    
+<style type="text/css">
+  td, body {font-family: sans-serif; font-size: 10pt;}
+  body {background-image:url(background2.png); 
+        background-color: #686868; 
+        padding:0;
+        margin:5px 5px 5px 5px; 
+        color:#FFF; }
+</style>    
+    
+</head>
+<body>
+    <form name="Prompt">
+    <!-- ****************** PROMPT FOR USER INPUT ****************** -->
+    <input type='button' onclick='promptForEntity()' value='Prompt for user input!' />
+    <hr />
+    <!-- ****************** PARAMETERS ****************** -->
+    <table border="0" cellpadding="0" cellspacing="0">
+		<tr>
+            <th width="150">
+                Message & Keywords:
+            </th>
+            <td>
+                <input type="text" id='messageAndKeywords' size="50" value="Select Entity [Rectangle/Circle/Line]">
+            </td>
+        </tr>
+        <tr>
+            <th width="150">
+                Global Keywords:
+            </th>
+            <td>
+                <input type="text" id='globalKeywords' size="50" value="Rectangle Circle Line">
+            </td>
+        <tr>
+            <th width="150">
+                Reject Message:
+            </th>
+            <td>
+                <input type="text" id='rejectMessage' size="50"  />
+            </td>
+        </tr>
+        <tr>
+            <th width="150">
+                Add Allowed Class:
+            </th>
+            <td>
+                <input type="text" id='addAllowedClass' size="50" />
+            </td>
+        </tr>
+		<tr>
+            <th width="150">
+                Exact Match:
+            </th>
+            <td>
+                <input type="checkbox" id='exactMatch' />
+            </td>
+        </tr>
+		<tr>
+            <th width="150">
+                Remove Allowed Class:
+            </th>
+            <td>
+                <input type="text" id='removeAllowedClass' size="50" value="" />
+            </td>
+        </tr>
+		<tr>
+		</tr>
+        <tr>
+            <th width="150">
+                Allow None: 
+            </th>
+            <td>
+                <input type="checkbox" id='allowNone' />
+            </td>
+        </tr>
+        <tr>
+            <th width="150">
+                Allow object on locked layer:
+            </th>
+            <td>
+                <input type="checkbox" id='allowObjectOnLockedLayer' />
+            </td>
+        </tr>			
+    </table>
+    </form>
+    <hr />
+    <!-- ****************** RESULTS ****************** -->
+    <table border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <th width="150">
+                Json Result:
+            </th>
+            <td>
+                <input type='text' id='jsonResult' value='empty' readonly='readonly' size="200" />
+            </td>
+        </tr>    
+        <tr>
+            <th width="150">
+                Status:
+            </th>
+            <td>
+                <input type='text' id='resultStatus' value='empty' readonly='readonly' />
+            </td>
+        </tr>
+        <tr>
+            <th width="150">
+                Value: 
+            </th>
+            <td>
+                <input type='text' id='resultValue' value='empty' readonly='readonly' size="100" />
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

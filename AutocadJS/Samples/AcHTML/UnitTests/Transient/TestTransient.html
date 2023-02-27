@@ -1,0 +1,251 @@
+<html>
+<head>
+<title>AutoCAD JavaScript Transient API Tests</title>
+<script type="text/javascript" src="http://www.autocadws.com/jsapi/v1/Autodesk.AutoCAD.js"></script>
+<script type="text/javascript" src="TestTransient.js" ></script>
+
+<style type="text/css">
+  td, body {font-family: sans-serif; font-size: 10pt;}
+  body {background-image:url(background2.png); 
+        background-color: #686868; 
+        padding:0;
+        margin:5px 5px 5px 5px; 
+        color:#FFF; }
+  textarea {font-family: Consolas; font-size: 8pt; }
+  
+  .HiddenCanvas { border: 2px solid #000; position:absolute; top:0;left:0;  
+           visibility: hidden; }
+</style>
+
+</head>
+
+<body>
+<div id="canvas" class="shadow_box" role="main">
+
+<canvas class='HiddenCanvas' id='tmpCanvas' width=28 height=28></canvas> 
+<canvas class='HiddenCanvas' id='tmpCanvasEx' width=247 height=84></canvas> 
+
+
+<input type='button' onclick='window.location.reload()' value='Reload' /><br />
+
+<h3>Image Transients</h3>
+
+<table border="0">
+<tr>
+    <td align='right'>Image Type</td>
+    <td>
+    <select id='BubbleType'>
+    <option selected>StickyPreview</option>
+    <option>Sticky</option>
+    <option>BubbleIdle</option>
+    <option>BubbleActive</option>
+    </select>
+    </td>
+</tr>
+<tr>
+    <td align='right'>Bubble ID</td>
+    <td>
+    <input type='text' id='BubbleID' value='1' />
+    </td>
+</tr>
+<tr>
+    <td align='right'>Posted By</td>
+    <td>
+    <input type='text' id='BubblePostedBy' value='ADN'  /><br />
+    </td>
+</tr>
+
+<tr>
+    <td align='right'>Bubble Message</td>
+    <td>
+    <textarea id='BubbleMessage' rows='4' cols='34' >
+Hello from JavaScript.
+    </textarea>
+   
+    </td>
+</tr>
+<tr>
+    <td align='right'>Cursor</td>
+    <td>
+    <select id='Cursor'  title='Sets the cursor to be displayed when mouse enters transient'>
+    <option selected>None</option>                      
+    <option>None</option>                             
+    <option>Arrow</option>                             
+    <option>Ibeam</option>                           
+    <option>Wait</option>                         
+    <option>Cross</option>                        
+    <option>UpArrow</option>                          
+    <option>SizeNWSE</option>                      
+    <option>SizeNESW</option>                     
+    <option>SizeWE</option>                       
+    <option>SizeNS</option>                   
+    <option>SizeAll</option>  
+    <option>No</option>               
+    <option>Hand</option>                  
+    <option>AppStarting</option>                      
+    <option>Help</option>     
+    </select>
+    </td>
+</tr>
+<tr>
+    <th>&nbsp;</th>
+    <td>
+     <input type='button' onclick='getCursor()' value='GetCursor' />
+    </td>
+</tr>
+
+<tr>
+    <th>&nbsp;</th>
+    <td>
+    <input type='button' onclick='addImageTransient()' value='AddTransient' />
+    </td>
+</tr>
+</table>
+
+
+<br />
+<hr />
+<h3>Vector Transients</h3>
+<table border="0">
+<tr>
+    <td align='right'>Color</td>
+    <td>
+    <select id='ColorCB'>
+    <option selected>Red</option>
+    <option>Yellow</option>
+    <option>Green</option>
+    <option>Cyan</option>
+    <option>Blue</option>
+    <option>Magenta</option>
+    <option>White</option>
+    <option>Atomic Tangerine</option>
+    </select>
+    </td>
+</tr>
+<tr>
+    <td align='right'>LineType</td>
+    <td>
+    <select id='LineTypeCB'>
+    <option selected>LineTypeSolid</option>                      
+    <option>Dashed</option>                             
+    <option>Dotted</option>                             
+    <option>Dash_Dot</option>                           
+    <option>Short_Dash</option>                         
+    <option>Medium_Dash</option>                        
+    <option>Long_Dash</option>                          
+    <option>Short_Dash_X2</option>                      
+    <option>Medium_Dash_X2</option>                     
+    <option>Long_Dash_X2</option>                       
+    <option>Medium_Long_Dash</option>                   
+    <option>Medium_Dash_Short_Dash_Short_Dash</option>  
+    <option>Long_Dash_Short_Dash</option>               
+    <option>Long_Dash_Dot_Dot</option>                  
+    <option>Long_Dash_Dot</option>                      
+    <option>Medium_Dash_Dot_Short_Dash_Dot</option>     
+    <option>Sparse_Dot</option>                                                    
+    <option>Solid_6_Pixels_Blank_6_Pixels</option>      
+    </select>
+    </td>
+</tr>
+<tr>
+    <td align='right'>LineWeight</td>
+    <td>
+    <select id='LineWeightCB'>
+    <option>0</option>
+    <option>5</option>
+    <option>9</option>
+    <option>13</option>
+    <option>15</option>
+    <option>18</option>
+    <option>20</option>
+    <option>25</option>
+    <option selected>30</option>
+    <option>35</option>
+    <option>40</option>
+    <option>50</option>
+    <option>53</option>
+    <option>60</option>
+    <option>70</option>
+    <option>80</option>
+    <option>90</option>
+    <option>100</option>
+    <option>106</option>
+    <option>120</option>
+    <option>140</option>
+    <option>158</option>
+    <option>200</option>
+    <option>211</option>
+    </select>
+    </td>
+</tr>
+<tr>
+    <td align='right'>Filled</td>
+    <td>
+    <input type='checkbox' id='Filled'/>
+    </td>
+</tr>
+<tr>
+    <th>&nbsp;</th>
+    <td>
+    <input type='button' onclick='addPolylineTransient()' value='Add Rectangle Transient' />
+    </td>
+</tr>
+<tr>
+    <th>&nbsp;</th>
+    <td>
+    <input type='button' onclick='addCircleTransient()' value='Add Circle Transient' />
+    </td>
+</tr>
+</table>
+
+<br />
+<hr />
+<h3>Update/Erase Transients</h3>
+
+<table border="0">
+
+<tr>
+    <td align='right'>Selected transient ID</td>
+    <td>
+    <input type='text' id='SelectedID' value='<none>' title='To set ID, click on transient in AutoCAD window'/>
+    </td>
+</tr>
+
+
+<tr>
+    <th>&nbsp;</th>
+    <td>
+    <input type='button' onclick='updateSelectedTransient()' value='Updated Selected Transient' title='Updates the selected transient with data from above'/>
+    </td>
+</tr>
+<tr>
+    <th>&nbsp;</th>
+    <td>
+    <input type='button' onclick='eraseSelectedTransient()' value='Erase Selected Transient' title='Erases the selected transient'/>
+    </td>
+</tr>
+<tr>
+    <th>&nbsp;</th>
+    <td>
+    <input type='button' onclick='eraseTransients()' value='Erase All Transients' title='Erases All transients'/>
+    </td>
+</tr>
+<tr>
+    <th>&nbsp;</th>
+    <td>
+    <input type='button' onclick='hideTransients()' value='Hide Transients' title='Hide All transients'/>
+    </td>
+</tr>
+<tr>
+    <th>&nbsp;</th>
+    <td>
+    <input type='button' onclick='showTransients()' value='Show Transients' title='Shows All transients'/>
+    </td>
+</tr>
+</table>
+</div>
+
+<p id='mouseevents' style='font-size: 8pt;'></p>
+
+</body>
+</html>
