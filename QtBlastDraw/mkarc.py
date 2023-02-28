@@ -732,8 +732,8 @@ class MkArc(MkCircle):
         super().conv(wtc)
 
     def draw(self, qp):
-        qp.drawArc(self._qcen.x()-self._qrad,self._qcen.y()-self._qrad, self._qrad*2, self._qrad*2, self._sang*16, (self._eang-self._sang)*16)        
-
+        # qp.drawArc(self._qcen.x()-self._qrad,self._qcen.y()-self._qrad, self._qrad*2, self._qrad*2, self._sang*16, (self._eang-self._sang)*16)        
+        qp.drawArc(int(self._qcen.x()-self._qrad),int(self._qcen.y()-self._qrad), int(self._qrad*2), int(self._qrad*2), int(self._sang*16), int((self._eang-self._sang)*16))        
     def __repr__(self):
         return f"MkArc({self._cen}, {self._rad}, isconv {self.isconv})"
 

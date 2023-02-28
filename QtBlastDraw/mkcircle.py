@@ -557,7 +557,7 @@ class MkCircle(MkObj):
         self.isconv = True
 
     def draw(self, qp):
-        qp.drawArc(self._qcen.x()-self._qrad,self._qcen.y()-self._qrad, self._qrad*2, self._qrad*2, 0, 360*16)
-        
+        # qp.drawArc(self._qcen.x()-self._qrad,self._qcen.y()-self._qrad, self._qrad*2, self._qrad*2, 0, 360*16)
+        qp.drawArc(int(self._qcen.x()-self._qrad),int(self._qcen.y()-self._qrad), int(self._qrad*2), int(self._qrad*2), 0, 360*16)        
     def __repr__(self):
         return f"MkCircle({self._cen}, {self._rad}, isconv {self.isconv})"

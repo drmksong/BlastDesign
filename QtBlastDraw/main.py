@@ -22,7 +22,7 @@ class MyApp(QWidget):
         self.setWindowTitle('drawing test')
 
         # changing the background color to yellow
-        self.setStyleSheet("background-color: black;")        
+        self.setStyleSheet("background-color: gray;")        
 
         self.show()
         self.mx = 0
@@ -36,10 +36,10 @@ class MyApp(QWidget):
             self.qp.end()
 
         self.qp.begin(self)
-        # self.draw_arc(self.qp)
-        # self.draw_sc(self.qp)
-        # self.draw_cen(self.qp)
-        # self.draw_inter(self.qp)
+        self.draw_arc(self.qp)
+        self.draw_sc(self.qp)
+        self.draw_cen(self.qp)
+        self.draw_inter(self.qp)
 
         self.tunnel(self.qp)
 
@@ -487,7 +487,7 @@ class MyApp(QWidget):
         self.my = a0.y()
         txt = f"Mouse 위치 ; x={a0.x()},y={a0.y()}"
 
-        # print(txt)
+        print(txt)
         return super().mousePressEvent(a0)
 
     def mouseMoveEvent(self, a0):
