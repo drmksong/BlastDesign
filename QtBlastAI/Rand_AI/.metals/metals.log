@@ -1,0 +1,9 @@
+[0m2021.08.13 19:33:18 INFO  Started: Metals version 0.10.5 in workspace 'D:\work\randnorm' for client Visual Studio Code 1.59.0.[0m
+[0m2021.08.13 19:33:18 INFO  time: initialize in 0.27s[0m
+[0m2021.08.13 19:33:18 WARN  Build server is not auto-connectable.[0m
+[0m2021.08.13 19:33:18 WARN  no build tool detected in workspace 'D:\work\randnorm'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. [0m
+[0m2021.08.20 18:26:16 INFO  Started: Metals version 0.10.5 in workspace 'D:\work\randnorm' for client Visual Studio Code 1.59.0.[0m
+[0m2021.08.20 18:26:16 INFO  time: initialize in 0.29s[0m
+[0m2021.08.20 18:26:21 WARN  Build server is not auto-connectable.[0m
+[0m2021.08.20 18:26:21 WARN  no build tool detected in workspace 'D:\work\randnorm'. The most common cause for this problem is that the editor was opened in the wrong working directory, for example if you use sbt then the workspace directory should contain build.sbt. [0m
+[0m2021.08.22 09:04:10 INFO  shutting down Metals[0m

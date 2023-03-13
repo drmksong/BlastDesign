@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1021</width>
+    <height>998</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>160</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>250</height>
+       </size>
+      </property>
+      <property name="title">
+       <string>GroupBox</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QSplitter" name="splitter_4">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <widget class="QLabel" name="label_3">
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>300</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>화약 종류</string>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="combo_exp">
+          <property name="editable">
+           <bool>false</bool>
+          </property>
+          <item>
+           <property name="text">
+            <string>모든 화약</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>에멀젼C</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>정밀폭약</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>벌크에멀젼</string>
+           </property>
+          </item>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSplitter" name="splitter_5">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <widget class="QLabel" name="label_4">
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>300</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>뇌관 종류</string>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="combo_det">
+          <property name="editable">
+           <bool>false</bool>
+          </property>
+          <item>
+           <property name="text">
+            <string>모든 뇌관</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>비전기</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>전기</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>전자</string>
+           </property>
+          </item>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSplitter" name="splitter_8">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <widget class="QLabel" name="label_7">
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>300</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>암석 분류</string>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="combo_rot">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="editable">
+           <bool>false</bool>
+          </property>
+          <item>
+           <property name="text">
+            <string>모든 암석분류</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>변성암</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>퇴적암</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>화성암</string>
+           </property>
+          </item>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSplitter" name="splitter_7">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <widget class="QLabel" name="label">
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>300</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>암석 이름</string>
+          </property>
+         </widget>
+         <widget class="QComboBox" name="combo_roc">
+          <property name="editable">
+           <bool>false</bool>
+          </property>
+          <item>
+           <property name="text">
+            <string>모든 암석</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>규장암</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>사암</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>석회암</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>섬록암</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>셰일</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>안산암</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>응회암</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>편마암</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>편암</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>화강반암</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>화강암</string>
+           </property>
+          </item>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSplitter" name="splitter_6">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <widget class="QSplitter" name="splitter_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <widget class="QLabel" name="label_2">
+           <property name="minimumSize">
+            <size>
+             <width>200</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>300</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>심발 종류</string>
+           </property>
+          </widget>
+          <widget class="QComboBox" name="combo_cen">
+           <property name="editable">
+            <bool>false</bool>
+           </property>
+           <item>
+            <property name="text">
+             <string>모든 심발</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Cylinder-cut</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>TBM 선굴착</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>V-CUT</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>라인 드릴링</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>분착식 다단발파</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>선대구경</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>수직구</string>
+            </property>
+           </item>
+          </widget>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSplitter" name="splitter_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout_3"/>
+    </item>
+    <item>
+     <widget class="QSplitter" name="splitter">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <widget class="QWidget" name="widget" native="true">
+       <property name="cursor">
+        <cursorShape>ArrowCursor</cursorShape>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QTableWidget" name="tableWidget">
+            <property name="minimumSize">
+             <size>
+              <width>550</width>
+              <height>0</height>
+             </size>
+            </property>
+            <row>
+             <property name="text">
+              <string>진동기준</string>
+             </property>
+            </row>
+            <column>
+             <property name="text">
+              <string>거리</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>거리</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>거리</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+          <item>
+           <widget class="QListWidget" name="listWidget">
+            <property name="minimumSize">
+             <size>
+              <width>400</width>
+              <height>0</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QProgressBar" name="progressBar">
+          <property name="value">
+           <number>0</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBox_2">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="title">
+       <string>GroupBox</string>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>267</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton">
+         <property name="text">
+          <string>분석 하기</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>266</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_2">
+         <property name="text">
+          <string>리포트 작성</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>267</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1021</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionOpen"/>
+    <addaction name="actionSave"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="text">
+    <string>Open</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
