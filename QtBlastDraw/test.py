@@ -2,11 +2,11 @@ from logging import raiseExceptions
 import sys
 import pytest
 from typing import List
-from PyQt5.QtWidgets import QWidget, QApplication
-from PyQt5.QtGui import QPainter, QPen
-from PyQt5.QtCore import Qt, QPoint
-from PyQt5 import QtGui
-from PyQt5.QtGui import QWheelEvent
+from PyQt6.QtWidgets import QWidget, QApplication
+from PyQt6.QtGui import QPainter, QPen
+from PyQt6.QtCore import Qt, QPoint
+from PyQt6 import QtGui
+from PyQt6.QtGui import QWheelEvent
 from mklib import *
 
 def test_pnt():

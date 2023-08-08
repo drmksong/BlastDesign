@@ -1,6 +1,6 @@
 import math
 from plum import dispatch
-from PyQt5.QtCore import QPoint, QLine
+from PyQt6.QtCore import QPoint, QLine
 from wtc import WorldToCanvas
 from enum import Enum
 from enum import Flag, auto
