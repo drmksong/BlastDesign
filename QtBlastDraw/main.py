@@ -47,7 +47,7 @@ class MyApp(QWidget):
 
 
     def tunnel(self,qp):
-        qp.setPen(QPen(Qt.green, 1))
+        qp.setPen(QPen(Qt.GlobalColor.green, 1))
 
         pnt = MkPoint(0,0)
 
@@ -55,7 +55,7 @@ class MyApp(QWidget):
 
 
     def draw_inter(self,qp):
-        qp.setPen(QPen(Qt.cyan, 1))
+        qp.setPen(QPen(Qt.GlobalColor.cyan, 1))
         
         pnts = []
         pnt = MkPoint(-1.0,-1.0)
@@ -180,7 +180,7 @@ class MyApp(QWidget):
         for l in lines:
             l.draw(self.qp)
 
-        qp.setPen(QPen(Qt.green, 1))
+        qp.setPen(QPen(Qt.GlobalColor.green, 1))
 
         c4 = MkCircle()
         c4.rad = 2.0
@@ -188,13 +188,13 @@ class MyApp(QWidget):
         c4.conv(self.wtc)
         c4.draw(self.qp)
 
-        qp.setPen(QPen(Qt.red, 1))
+        qp.setPen(QPen(Qt.GlobalColor.red, 1))
 
         arc = cir.trim(c4, mkDir.mkIN)
         arc.conv(self.wtc)
         arc.draw(self.qp)
 
-        qp.setPen(QPen(Qt.blue, 1))
+        qp.setPen(QPen(Qt.GlobalColor.blue, 1))
         arc2 = MkArc()
         arc2.cen = MkPoint(2.2,3.8)
         arc2.rad = 2.5
@@ -209,13 +209,13 @@ class MyApp(QWidget):
             print('arc2 trim is not false')
             arc3, arc4 = arc2.trim(arc,mkDir.mkIN)
 
-        qp.setPen(QPen(Qt.white, 1))
+        qp.setPen(QPen(Qt.GlobalColor.white, 1))
         if arc3 is not None:
             arc3.conv(self.wtc)
             arc3.draw(self.qp)
             print('arc3 drawn')
 
-        qp.setPen(QPen(Qt.yellow, 1))
+        qp.setPen(QPen(Qt.GlobalColor.yellow, 1))
         if arc4 is not None:
             arc4.conv(self.wtc)
             arc4.draw(self.qp)
@@ -306,7 +306,7 @@ class MyApp(QWidget):
         #     l.draw(self.qp)
         
         # print('##################\n')
-        # qp.setPen(QPen(Qt.magenta, 1))        
+        # qp.setPen(QPen(Qt.GlobalColor.magenta, 1))        
 
         # a4 = MkArc()
         # a4.rad = 2.0
@@ -366,7 +366,7 @@ class MyApp(QWidget):
         # print(f'cir.whang(pnt2) : {cir.whang(pnt2)}')
 
     def draw_cen(self,qp):
-        qp.setPen(QPen(Qt.red, 1))
+        qp.setPen(QPen(Qt.GlobalColor.red, 1))
         # width = 10
         # height = 10
         # qp.drawArc(self.wtc._cen.x()-width/2,self.wtc._cen.y()-height/2, width, height, 0, 360*16)
@@ -405,7 +405,7 @@ class MyApp(QWidget):
             l.draw(self.qp)
 
     def draw_sc(self, qp):
-        qp.setPen(QPen(Qt.red, 1))
+        qp.setPen(QPen(Qt.GlobalColor.red, 1))
 
         pnts = []
         pnt = MkPoint(-5.0,5.0)
@@ -448,7 +448,7 @@ class MyApp(QWidget):
         c1.draw(self.qp)
 
     def draw_arc(self, qp):
-        qp.setPen(QPen(Qt.black, 3))
+        qp.setPen(QPen(Qt.GlobalColor.black, 3))
         qp.drawArc(20, 20, 100, 100, 0 * 16, 30 * 16)
         qp.drawText(60, 100, '30°')
 
@@ -516,11 +516,11 @@ def main():
 
     # w = QWidget()
     # p = w.palette()
-    # p.setColor(w.backgroundRole(), Qt.red)
+    # p.setColor(w.backgroundRole(), Qt.GlobalColor.red)
     # w.setPalette(p)
 
     ex = MyApp()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
 
 
 if __name__=="__main__":
