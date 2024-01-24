@@ -1,14 +1,22 @@
+import sys
+
+from PyQt6.QtGui import QPainter, QPen
+from PyQt6.QtWidgets import (
+    QApplication,
+    QWidget
+)
+from PyQt6.QtCore import Qt, QPoint
 from mklib import *
 import copy
 
 class MkCircle(MkObj):
-    def __init__(self, parent=None):
+    def __init__(self, cen:MkPoint=MkPoint(0,0), rad:float=0, parent=None):
         super().__init__()
         self.classname = 'MkCircle'
         self._qcen = QPoint(0,0)
         self._qrad = 0
-        self._cen = MkPoint(0,0)
-        self._rad = 0
+        self._cen = cen
+        self._rad = rad
         self.isconv = False
 
     def get_pnt(self, ang: float) -> MkPoint:
@@ -59,6 +67,7 @@ class MkCircle(MkObj):
 
     # it is to check whether the extention of the line inter with circle
     # it should be further checked the segment of the line, i.e. t is within 0.0 to 1.0
+    @classmethod
     @dispatch
     def is_inter(self, line:MkLine)->bool:
         x1 = line._p1.x
@@ -84,6 +93,7 @@ class MkCircle(MkObj):
         else:
             return True
     
+    @classmethod
     @dispatch
     def get_inter(self, line:MkLine):
         # flag = self.is_inter(line)
@@ -122,6 +132,7 @@ class MkCircle(MkObj):
 
         return (pnt1, pnt2)
 
+    @classmethod
     @dispatch
     def is_inter(self, c:'MkCircle')->bool:
         d = self._cen.dist(c._cen)
@@ -131,6 +142,7 @@ class MkCircle(MkObj):
         else:
             return False
 
+    @classmethod
     @dispatch
     def get_inter(self, c:'MkCircle'):
         if self.is_inter(c) == False:
@@ -168,6 +180,7 @@ class MkCircle(MkObj):
     # is_inter between circle and arc is to check circle and arc's circle
     # is overlapped and if two intersections are in arc return true else return false
     # TODO : write test code
+    @classmethod
     @dispatch
     def is_inter(self, a:'MkArc') -> bool:
         d = self._cen.dist(a._cen)
@@ -205,6 +218,7 @@ class MkCircle(MkObj):
 
 
     # TODO : write test code 
+    @classmethod
     @dispatch
     def get_inter(self, a:'MkArc'):
         if self.is_inter(a) == False:
@@ -246,6 +260,7 @@ class MkCircle(MkObj):
 
     # how we define the distance to the circle
     # shortest distance from the point to circle
+    @classmethod
     @dispatch
     def dist(self, p:MkPoint) -> float:
         d = self._cen.dist(p)
@@ -253,6 +268,7 @@ class MkCircle(MkObj):
 
     # how we define the distance to the circle
     # shortest distance from the line to circle
+    @classmethod
     @dispatch
     def dist(self, l:MkLine) -> float:
         d = l.dist(self._cen)
@@ -260,16 +276,19 @@ class MkCircle(MkObj):
 
     # how we define the distance to the circle
     # shortest distance from the circle to circle
+    @classmethod
     @dispatch
     def dist(self, c:'MkCircle') -> float:
         d = self._cen.dist(c._cen)
         return max(d - self._rad - c._rad, 0)
 
     # TODO : write code
+    @classmethod
     @dispatch
     def dist(self, a:'MkArc') -> float:
         raise Exception('NotYetImplement') 
 
+    @classmethod
     @dispatch
     def offset(self, dist: float, dir : mkDir) -> 'MkCircle':
         c = MkCircle()
@@ -279,6 +298,7 @@ class MkCircle(MkObj):
     
     # cut the line l with self circle
     # TODO : write test code 
+    @classmethod
     @dispatch
     def trim(self, l: MkLine, dir: mkDir):
                 
@@ -398,6 +418,7 @@ class MkCircle(MkObj):
     # cut the circle c with self circle
     # dir is only mkDir.mkIN or mkDir.mkOut, no left, right, start and end
     # TODO : write test code 
+    @classmethod
     @dispatch
     def trim(self, c: 'MkCircle', dir: mkDir):
         from mkarc import MkArc
@@ -446,6 +467,7 @@ class MkCircle(MkObj):
         
     # cut the arc a with self circle
     # TODO : write test code 
+    @classmethod
     @dispatch
     def trim(self, arc: 'MkArc', dir: mkDir):
         from mkarc import MkArc
@@ -559,5 +581,59 @@ class MkCircle(MkObj):
     def draw(self, qp):
         # qp.drawArc(self._qcen.x()-self._qrad,self._qcen.y()-self._qrad, self._qrad*2, self._qrad*2, 0, 360*16)
         qp.drawArc(int(self._qcen.x()-self._qrad),int(self._qcen.y()-self._qrad), int(self._qrad*2), int(self._qrad*2), 0, 360*16)        
+    
     def __repr__(self):
         return f"MkCircle({self._cen}, {self._rad}, isconv {self.isconv})"
+
+if __name__ == "__main__":
+    class MainWidget(QWidget):
+        def __init__(self):
+            super().__init__()
+            self.setWindowTitle("MkPoint Test App")
+            self.resize(1000, 1000)
+            self.qp = None
+            self.wtc = None
+
+            self.show()
+
+        def paintEvent(self, e):
+            self.qp = QPainter()
+            self.qp.begin(self)
+            self.wtc = WorldToCanvas(self.qp)
+            self.qp.end()
+
+            self.qp.begin(self)
+            self.draw_points()
+            self.qp.end()
+
+        def draw_points(self):
+            p1 = MkPoint(10, 10)
+            p2 = MkPoint(5, 5)
+            print(p1,p2)
+            p1.conv(window.wtc)
+            p2.conv(window.wtc)
+
+            self.qp.begin(self)
+
+            pen = QPen()
+            pen.setWidth(40)
+            pen.setColor(Qt.GlobalColor.red)
+            self.qp.setPen(pen)
+            p1.draw(self.qp)
+            pen.setColor(Qt.GlobalColor.blue)
+            self.qp.setPen(pen)
+            p2.draw(self.qp)
+
+            self.qp.end()
+
+            print(p1.px,p1.py)
+            print(p2.px,p2.py)
+    
+    app = QApplication(sys.argv)
+
+    # Create a Qt widget, which will be our window.
+    window = MainWidget()
+    window.show()  # IMPORTANT!!!!! Windows are hidden by default.
+
+    # Start the event loop.
+    app.exec()
