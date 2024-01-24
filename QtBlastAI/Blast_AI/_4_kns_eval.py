@@ -9,6 +9,12 @@ from SimpNN import SimpNN as SimpNN
 
 scaler = MinMaxScaler()
 
+
+# 4 x 4 x 4 x 8 = 512
+# 4 x 4 x 12 x 8 = 1536
+# 512 + 1536 = 2048
+#
+
 col_size = 5
 out_size = 3
 
