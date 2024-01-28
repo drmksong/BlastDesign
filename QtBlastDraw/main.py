@@ -35,15 +35,16 @@ class MyApp(QWidget):
             self.wtc = WorldToCanvas(self.qp)
             self.qp.end()
 
-        self.qp.begin(self)
-        # self.draw_arc(self.qp)
+        self.qp.begin(self) ############################
+
+        self.draw_arc(self.qp)
         # self.draw_sc(self.qp)
         # self.draw_cen(self.qp)
-        self.draw_inter(self.qp)
+        # self.draw_inter(self.qp)
 
         self.tunnel(self.qp)
 
-        self.qp.end()
+        self.qp.end() ##################################
 
 
     def tunnel(self,qp):

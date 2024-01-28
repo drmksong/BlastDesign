@@ -129,6 +129,7 @@ if __name__ == "__main__":
             c2.cen = p2
             c2.rad = 5
 
+
             print(p1, p2)
             p1.conv(window.wtc)
             p2.conv(window.wtc)
