@@ -5,3 +5,4 @@ built
 recording
 *.zip
 .DS_Store
+*.dwl*

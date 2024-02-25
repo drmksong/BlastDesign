@@ -4,8 +4,8 @@ import PyGi as Gi
 import PyDb as Db
 import PyAp as Ap
 import PyEd as Ed
-# from inputMonitor import *
 import math
+from lib import MkCircle, MkLine, MkTunnel, MkPolyLine
 
 def OnPyInitApp():
     print("\nOnPyInitApp")
@@ -105,6 +105,82 @@ class Tunnel():
             print(l)
             l.appendDb(model)
 
+    def buildTunnel(self):
+        try:
+            # get the working database, database is also a property of Document
+            db = Db.HostApplicationServices().workingDatabase()
+            model = Db.BlockTableRecord(db.modelSpaceId(), Db.OpenMode.ForWrite)
+
+            mkpl = MkPolyLine()
+            mktun = MkTunnel()  
+
+            # create a Polyline
+            pline = Db.Polyline()
+
+            pnts = [
+                (5194.2024 ,    0.0000),
+                (4936.3448 , 5349.1272),
+                (-4936.3448, 5349.1272),
+                (-5194.2024,    0.0000),
+            ]  
+
+            gepnts = [Ge.Point2d(x,y) for x,y in pnts]
+
+            cen = [(-129.9038,2424.1272 ),
+                (   0.0000,2499.1272 ),
+                ( 129.9038,2424.1272 ),
+                (   0.0000,53646.3183)
+            ]
+
+            rad = [5850.0000,
+                5700.0000,
+                5850.0000,
+                53897.1911
+            ]
+
+            # cirs = [MkCircle(Ge.Point3d(c[0],c[1],0),Ge.Vector3d(0,0,1),Ge.Vector3d(1,0,0),r,0,3.14159*2) for c,r in zip(cen,rad)]
+            # for c in cirs:          
+            #     c.appendDb(model)
+
+            ang = []
+            for i, c in enumerate(cen):
+                s = pnts[i]
+                e = pnts[(i+1)%4]
+                v1 = Ge.Vector2d(s[0]-c[0],s[1]-c[1])
+                v2 = Ge.Vector2d(s[0]-e[0],s[1]-e[1])
+                ang.append(v1.angleTo(v2))
+            print(ang)
+
+            # verge is necessary to present arc of the tunnel profile 
+            verge = [math.tan(math.pi/2+a) if a > math.pi/2 else math.tan((math.pi/2-a)/2) for a in ang]
+            print(verge)
+
+            pline.setDatabaseDefaults()
+            pline.addVertexAt(0,gepnts[0], verge[0], 0, 0)
+            pline.addVertexAt(1,gepnts[1], verge[1], 0, 0)
+            pline.addVertexAt(2,gepnts[2], verge[2], 0, 0)
+            pline.addVertexAt(3,gepnts[3], verge[3], 0, 0)
+            pline.setClosed(True)
+
+            #zero based
+            # pline.addVertexAt(0, Ge.Point2d(-1732.0508, -1000),0.09535,0,0)
+            # pline.addVertexAt(1, Ge.Point2d(1732.0508, -1000),0.372852577,0,0)
+            # # pline.addVertexAt(3, Ge.Point2d(-800, -600))
+            # pline.setClosed(True)
+
+            # set a color
+            color = Db.Color()
+            color.setRGB(255, 0, 255)
+            pline.setColor(color)
+
+            # open modelspace for write and add the entity
+
+            model.appendAcDbEntity(pline)
+
+            # python garbage collects here, circle and model will be closed or deleted
+            # here    
+        except Exception as err:
+            print(err)
 
 # manager = Ap.curDoc().inputPointManager()
 # t = Tunnel()

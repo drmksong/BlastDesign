@@ -7,7 +7,6 @@ import PyEd as Ed
 # from inputMonitor import *
 import math
 from lib import MkCircle, MkLine, MkTunnel, MkPolyLine
-import pandas as pd
 
 def OnPyInitApp():
     print("\nOnPyInitApp")
@@ -138,9 +137,9 @@ def PyRxCmd_tu():
             53897.1911
         ]
 
-        # cirs = [MkCircle(Ge.Point3d(c[0],c[1],0),Ge.Vector3d(0,0,1),Ge.Vector3d(1,0,0),r,0,3.14159*2) for c,r in zip(cen,rad)]
-        # for c in cirs:          
-        #     c.appendDb(model)
+        cirs = [MkCircle(Ge.Point3d(c[0],c[1],0),Ge.Vector3d(0,0,1),Ge.Vector3d(1,0,0),r,0,3.14159*2) for c,r in zip(cen,rad)]
+        for c in cirs:          
+            c.appendDb(model)
 
         ang = []
         for i, c in enumerate(cen):
