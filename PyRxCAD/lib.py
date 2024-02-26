@@ -328,7 +328,7 @@ class MkPolyLine():
         model.appendAcDbEntity(self.Polyline)
 
 
-class MkTunnelProfile(MkPolyLine):
+class MkTunnelProfile(MkPolyLine): 
     def __init__(self):
         super().__init__()
         self.Center = Ge.Point3d(0, 0, 0)
@@ -411,6 +411,12 @@ class MkTunnelProfile(MkPolyLine):
             # here    
         except Exception as err:
             print(err)
+
+class MkBlastLine(MkLine):
+    pass
+
+class MkBlastArc(MkArc):    
+    pass
 
 class MkTunnel():
     def __init__(self):
