@@ -23,36 +23,58 @@ def OnPyLoadDwg():
 def OnPyUnloadDwg():
     print("\nOnPyUnloadDwg")
 
-class MkCircle():
-    def __init__(self,cen=Ge.Point3d(0, 0, 0),norm=Ge.Vector3d(0, 0, 1),ref=Ge.Vector3d(1, 0, 0),rad=1000):
+class MkArc():
+    def __init__(self,cen=Ge.Point3d(0, 0, 0),norm=Ge.Vector3d(0, 0, 1),ref=Ge.Vector3d(1, 0, 0),rad=1000,start=0,end=2*3.141592):
         self.Center = cen
         self.Norm = norm
         self.Ref = ref
         self.Radius = rad
-        self.Circle = Db.Arc()
-        self.Color = Db.Color()
+        self.StartAngle = start
+        self.EndAngle = end
+        self.Start = Ge.Point3d(self.Radius*math.cos(self.StartAngle)+self.Center[0],self.Radius*math.sin(self.StartAngle)+self.Center[1],0)
+        self.End = Ge.Point3d(self.Radius*math.cos(self.EndAngle)+self.Center[0],self.Radius*math.sin(self.EndAngle)+self.Center[1],0)
+        
+        v1 = Ge.Vector2d(self.Start[0]-self.Center[0],self.Start[1]-self.Center[1])
+        v2 = Ge.Vector2d(self.Start[0]-self.End[0],self.Start[1]-self.End[1])
+        a=(v1.angleTo(v2))
+        self.Verge = math.tan(math.pi/2+a) if a > math.pi/2 else math.tan((math.pi/2-a)/2)
+        # self.Circle = Db.Arc()
     
-    def setRadius(self, r:float):
+    def setRadius(self, r):
         self.Radius = r
+        self.Start = Ge.Point3d(self.Radius*math.cos(self.StartAngle)+self.Center[0],self.Radius*math.sin(self.StartAngle)+self.Center[1],0)
+        self.End = Ge.Point3d(self.Radius*math.cos(self.EndAngle)+self.Center[0],self.Radius*math.sin(self.EndAngle)+self.Center[1],0)
 
-    def setCenter(self, c:Ge.Point3d):
+        
+    def setCenter(self, c):
         self.Center = c
+        self.Start = Ge.Point3d(self.Radius*math.cos(self.StartAngle)+self.Center[0],self.Radius*math.sin(self.StartAngle)+self.Center[1],0)
+        self.End = Ge.Point3d(self.Radius*math.cos(self.EndAngle)+self.Center[0],self.Radius*math.sin(self.EndAngle)+self.Center[1],0)
 
-    def setNorm(self, n:Ge.Vector3d):
+        
+    def setStartAngle(self, a):
+        self.StartAngle = a
+        self.Start = Ge.Point3d(self.Radius*math.cos(self.StartAngle)+self.Center[0],self.Radius*math.sin(self.StartAngle)+self.Center[1],0)
+        self.End = Ge.Point3d(self.Radius*math.cos(self.EndAngle)+self.Center[0],self.Radius*math.sin(self.EndAngle)+self.Center[1],0)
+
+
+    def setEndAngle(self, a):
+        self.EndAngle = a
+        self.Start = Ge.Point3d(self.Radius*math.cos(self.StartAngle)+self.Center[0],self.Radius*math.sin(self.StartAngle)+self.Center[1],0)
+        self.End = Ge.Point3d(self.Radius*math.cos(self.EndAngle)+self.Center[0],self.Radius*math.sin(self.EndAngle)+self.Center[1],0)
+
+
+    def setNorm(self, n):
         self.Norm = n
 
-    def setRef(self, r:Ge.Vector3d):    
+    def setRef(self, r):    
         self.Ref = r                
 
-    def setColor(self, c:Db.Color):
-        self.Color = c
-
     def convDb(self)->Db.Arc:
-        self.Circle = Db.Arc(self.Center,self.Norm,self.Radius,0,2*3.141592)
-        self.Circle.setColor(self.Color)
+        self.Circle = Db.Arc(self.Center,self.Norm,self.Radius,self.StartAngle,self.EndAngle)
         return self.Circle
-
-    def measure(self,space:float)->list:
+    
+    def measure(self,space):
         N = self.Radius*(self.EndAngle-self.StartAngle)/space
         theta = space/self.Radius
         print(f'N = {N}, theta = {theta}')
@@ -63,80 +85,10 @@ class MkCircle():
             for i in range(round(N))
         ]
 
-    def measureN(self,n:int)->list:
-        theta = (self.EndAngle-self.StartAngle)/n
-        print(f'N = {n}, theta = {theta}')
-
-        return [
-            (self.Radius*math.cos(self.StartAngle+theta*float(i))+self.Center[0],
-             self.Radius*math.sin(self.StartAngle+theta*float(i))+self.Center[1]) 
-            for i in range(n)
-        ]
-    def appendDb(self,model:Db.BlockTableRecord):
-        self.convDb()
-        model.appendAcDbEntity(self.Circle)
-
-class MkArc(MkCircle):
-    def __init__(self,cen=Ge.Point3d(0, 0, 0),norm=Ge.Vector3d(0, 0, 1),ref=Ge.Vector3d(1, 0, 0),rad=1000,start=0,end=2*3.141592):
-        super().__init__(cen,norm,ref,rad)
-        self.StartAngle = start
-        self.EndAngle = end
-        self.Start = Ge.Point3d(self.Radius*math.cos(self.StartAngle)+self.Center[0],self.Radius*math.sin(self.StartAngle)+self.Center[1],0)
-        self.End = Ge.Point3d(self.Radius*math.cos(self.EndAngle)+self.Center[0],self.Radius*math.sin(self.EndAngle)+self.Center[1],0)
-        
-        v1 = Ge.Vector2d(self.Start[0]-self.Center[0],self.Start[1]-self.Center[1])
-        v2 = Ge.Vector2d(self.Start[0]-self.End[0],self.Start[1]-self.End[1])
-        a=(v1.angleTo(v2))
-        self.Verge = math.tan(math.pi/2+a) if a > math.pi/2 else math.tan((math.pi/2-a)/2)
-        self.Arc = Db.Arc()
-    
-    def setRadius(self, r:float):
-        super().setRadius(r)
-        self.Start = Ge.Point3d(self.Radius*math.cos(self.StartAngle)+self.Center[0],self.Radius*math.sin(self.StartAngle)+self.Center[1],0)
-        self.End = Ge.Point3d(self.Radius*math.cos(self.EndAngle)+self.Center[0],self.Radius*math.sin(self.EndAngle)+self.Center[1],0)
-
-        
-    def setCenter(self, c:Ge.Point3d):
-        super().setCenter(c)
-        self.Start = Ge.Point3d(self.Radius*math.cos(self.StartAngle)+self.Center[0],self.Radius*math.sin(self.StartAngle)+self.Center[1],0)
-        self.End = Ge.Point3d(self.Radius*math.cos(self.EndAngle)+self.Center[0],self.Radius*math.sin(self.EndAngle)+self.Center[1],0)
-
-        
-    def setStartAngle(self, a:float): # a is in radians
-        self.StartAngle = a
-        self.Start = Ge.Point3d(self.Radius*math.cos(self.StartAngle)+self.Center[0],self.Radius*math.sin(self.StartAngle)+self.Center[1],0)
-        self.End = Ge.Point3d(self.Radius*math.cos(self.EndAngle)+self.Center[0],self.Radius*math.sin(self.EndAngle)+self.Center[1],0)
-
-
-    def setEndAngle(self, a:float): # a is in radians
-        self.EndAngle = a
-        self.Start = Ge.Point3d(self.Radius*math.cos(self.StartAngle)+self.Center[0],self.Radius*math.sin(self.StartAngle)+self.Center[1],0)
-        self.End = Ge.Point3d(self.Radius*math.cos(self.EndAngle)+self.Center[0],self.Radius*math.sin(self.EndAngle)+self.Center[1],0)
-
-
-    def convDb(self)->Db.Arc:
-        self.Arc = Db.Arc(self.Center,self.Norm,self.Radius,self.StartAngle,self.EndAngle)
-        self.Arc.setColor(self.Color)
-        return self.Arc
-    
-    def measure(self,space:float)->list: # list of points, not Ge.Point3d so that you much convert it to Ge.Point3d
-        if self.StartAngle > self.EndAngle:
-            self.StartAngle -= 2*3.141592
-
-        N = self.Radius*(self.EndAngle-self.StartAngle)/space
-        theta = space/self.Radius
-        print(f'N = {N}, theta = {theta}, sang={self.StartAngle}, eang={self.EndAngle}')
-
-        return [
-            (self.Radius*math.cos(self.StartAngle+theta*float(i))+self.Center[0],
-             self.Radius*math.sin(self.StartAngle+theta*float(i))+self.Center[1]) 
-            for i in range(round(N))
-        ]
-
-    def appendDb(self,model:Db.BlockTableRecord):
+    def appendDb(self,model):
         # self.convDb()
-        self.Arc = Db.Arc(self.Center,self.Norm,self.Radius,self.StartAngle,self.EndAngle)
-        model.appendAcDbEntity(self.Arc)
+        self.Circle = Db.Arc(self.Center,self.Norm,self.Radius,self.StartAngle,self.EndAngle)
+        model.appendAcDbEntity(self.Circle)
 
 
 class MkLine():
@@ -145,25 +97,18 @@ class MkLine():
         self.End = end
         self.Length = self.Start.distanceTo(self.End)
         self.Line = Db.Line()
-        self.Color = Db.Color()
 
-    def setStart(self, s:Ge.Point3d):
+    def setStart(self, s):
         self.Start = s
-        self.Length = self.Start.distanceTo(self.End)
 
-    def setEnd(self, e:Ge.Point3d):    
+    def setEnd(self, e):    
         self.End = e
-        self.Length = self.Start.distanceTo(self.End)
-
-    def setColor(self, c:Db.Color):
-        self.Color = c
 
     def convDb(self)->Db.Line:
         self.Line = Db.Line(self.Start,self.End)
-        self.Line.setColor(self.Color)
         return self.Line
     
-    def measure(self,space:float)->list: # list of points, not Ge.Point3d so that you much convert it to Ge.Point3d
+    def measure(self,space):
         N = (self.Length/space)
         s = self.Start
         e = self.End
@@ -173,7 +118,7 @@ class MkLine():
             for i in range(round(N))
         ]
     
-    def scale(self,sc:float):
+    def scale(self,sc):
         m = [(self.Start[0]+self.End[0])/2,(self.Start[1]+self.End[1])/2]
         s = self.Start
         e = self.End
@@ -182,7 +127,7 @@ class MkLine():
         self.End   = Ge.Point3d(m[0]+sc*(e[0]-m[0]),m[1]+sc*(e[1]-m[1]),0)
     
     # edge is the length of the edge to be trimmed
-    def trimEdge(self,edge:float):
+    def trimEdge(self,edge):
         s = self.Start
         e = self.End
         m = Ge.Point3d((s[0]+e[0])/2,(s[1]+e[1])/2,0)
@@ -196,7 +141,7 @@ class MkLine():
             self.End   = Ge.Point3d(m[0]+(e[0]-m[0])*(self.Length-2*edge)/self.Length,m[1]+(e[1]-m[1])*(self.Length-2*edge)/self.Length,0)
 
     # dir = 1 if offset is to the right, -1 if offset is to the left, otherwise no offset
-    def offset(self,off:float,dir:int)->'MkLine':
+    def offset(self,off,dir):
         if dir == 1:
             s = self.Start
             e = self.End
@@ -218,12 +163,34 @@ class MkLine():
         ne = Ge.Point3d(nm[0]+(e[0]-m[0]),nm[1]+(e[1]-m[1]),0)
         return MkLine(ns,ne)
 
-    def appendDb(self,model:Db.BlockTableRecord):
+    def appendDb(self,model):
         self.convDb()
         model.appendAcDbEntity(self.Line)
 
 
 class MkPolyLine():
+    def __init__(self,pts=[]):
+        self.Points = pts
+        self.Poly = Db.Polyline()
+    
+    def addPoint(self,p):
+        self.Points.append(p)
+
+    def addArc(self,a):
+        pass
+
+    def convDb(self)->Db.Polyline:
+        self.Poly = Db.Polyline()
+        for p in self.Points:
+            self.Poly.addVertexAt(len(self.Points),p,0,0,0)
+        return self.Poly
+    
+    def appendDb(self,model):
+        self.convDb()
+        model.appendAcDbEntity(self.Poly)
+
+
+class MkTunnelProfile():
     def __init__(self):
         # self.Center = Ge.Point3d(0, 0, 0)
         self.Arcs = []
@@ -232,35 +199,34 @@ class MkPolyLine():
         self.pnts = []
         self.rads = []
         self.verges = []
-        self.Color = Db.Color()
 
-        
-    def addArc(self,a:MkArc):
+    def setCenter(self, c):
+        self.Center = c
+
+    def buildPoly(self,elist):
+        self.Polyline = Db.Polyline(elist)
+        return self.Polyline
+    
+    def addArc(self,a):
         self.Arcs.append(a)
         st = Ge.Point2d(a.Start[0],a.Start[1])
         ed = Ge.Point2d(a.End[0],a.End[1])
         if len(self.pnts)>0:
-            print(f'\n *** distance = {st.distanceTo(self.pnts[-1])}')
-            if st.distanceTo(self.pnts[-1]) < 1:
+            print(f'distance = {st.distanceTo(self.pnts[-1])}')
+            if st.distanceTo(self.pnts[-1]) < 1 and ed.distanceTo(self.pnts[0]) > 10:
                 print(f'valid self.pnts[-1] = {self.pnts[-1]}, a.Start = {st}')
                 print('Valid Line, append operation')
                 self.pnts.append(ed)
                 self.rads.append(a.Radius)
                 self.verges.append(a.Verge)
-            elif st.distanceTo(self.pnts[-1]) > 1:
+            if ed.distanceTo(self.pnts[0]) < 1:
+                self.rads.append(a.Radius)
+                self.verges.append(a.Verge)
+            else:
                 print(f'invalid self.pnts[-1] = {self.pnts[-1]}, a.Start = {st}')
                 print('Invalid Line, arbort operation')
                 # exit(-1)
-            else:
-                pass
-            if ed.distanceTo(self.pnts[0]) < 10:
-                print(f'valid self.pnts[0] = {self.pnts[-1]}, a.End = {ed}')
-                print('Valid Line, append operation')
-                self.rads.append(a.Radius)
-                self.verges.append(a.Verge)
-            
         else:
-            print('First Arc')
             self.pnts.append(st)
             self.rads.append(a.Radius)
             self.verges.append(a.Verge)
@@ -292,15 +258,26 @@ class MkPolyLine():
             self.rads.append(0.0)
             self.verges.append(0.0)   
 
-    def setColor(self, c:Db.Color):
-        self.Color = c
 
+    def appendDb(self,model):
+        for c in self.Circles:
+            print(c)
+            c.appendDb(model)
+        for l in self.Lines:
+            print(l)
+            l.appendDb(model)
 
-    def buildPoly(self,debug=False):
+    def buildProfile(self): ### this is the main function to build the tunnel profile that I am working on
         try:
+            db = Db.HostApplicationServices().workingDatabase()
+            model = Db.BlockTableRecord(db.modelSpaceId(), Db.OpenMode.ForWrite)
+            
             assert len(self.pnts) == len(self.rads) == len(self.verges)
-            if debug:
-                print(f'pnts = {self.pnts}, rads = {self.rads}, verges = {self.verges}')
+            print(f'pnts = {self.pnts}, rads = {self.rads}, verges = {self.verges}')
+
+            # gepnts = [Ge.Point3d(x,y,z) for x,y,z in self.pnts]
+            # for x,y,z in self.pnts:
+            #     print(f'x={x},y={y},z={z},gepnts = {gepnts}')
 
             gepnts = [Ge.Point2d(self.pnts[i][0],self.pnts[i][1]) for i in range(len(self.pnts))]
 
@@ -309,33 +286,17 @@ class MkPolyLine():
                 self.Polyline.addVertexAt(i,self.pnts[i], self.verges[i], 0, 0)
             self.Polyline.setClosed(True)
 
-            # color = Db.Color()
-            # color.setRGB(255, 0, 255)
-            self.Polyline.setColor(self.Color)
+            color = Db.Color()
+            color.setRGB(255, 0, 255)
+            self.Polyline.setColor(color)
+
+            # open modelspace for write and add the entity
+
+            model.appendAcDbEntity(self.Polyline)
 
         except Exception as err:
             print(err)  
-
-
-    def appendDb(self,model:Db.BlockTableRecord,debug=False): # build Polyline has to be done earlier ***
-        if debug:
-            for a in self.Arcs:
-                print(a)
-                a.appendDb(model)
-            for l in self.Lines:
-                print(l)
-                l.appendDb(model)
-        model.appendAcDbEntity(self.Polyline)
-
-
-class MkTunnelProfile(MkPolyLine):
-    def __init__(self):
-        super().__init__()
-        self.Center = Ge.Point3d(0, 0, 0)
-
-    def setCenter(self, c:Ge.Point3d): # TODO: delete it if it is not necessary
-        self.Center = c
-
+    
     def buildTunnel(self):
         try:
             # get the working database, database is also a property of Document
@@ -416,44 +377,36 @@ class MkTunnel():
     def __init__(self):
         self.Profile = MkTunnelProfile()
         self.Lines = [] # list of MkLine
-        self.Arcs = [] # list of MkArc
         self.Blasthole = [] # list of MkCircle
-        
-    def addBlasthole(self,bh:MkCircle):
-        self.Blasthole.append(bh)
+        self.db = Db.HostApplicationServices().workingDatabase()
+        self.model = Db.BlockTableRecord(self.db.modelSpaceId(), Db.OpenMode.ForWrite)
 
-    def addLine(self,l:MkLine):
+        
+    def addArc(self,a):
+        pass
+
+    def addLine(self,l):
         self.Lines.append(l)
 
-    def addArc(self, a:MkArc):
-        self.Arcs.append(a)
-
-    def appendDb(self,model:Db.BlockTableRecord,debug=False):
-        for a in self.Arcs:
-            if debug: print(a)
-            a.appendDb(model)
+    def appendDb(self):
+        for b in self.Blasthole:
+            print(b)
+            b.appendDb(self.model)
         for l in self.Lines:
-            if debug: print(l)
-            l.appendDb(model)
-        for bh in self.Blasthole:
-            if debug: print(bh)
-            bh.appendDb(model)
-
+            print(l)
+            l.appendDb(self.model)
 
 
 def PyRxCmd_tutst():
     try:
-        db = Db.HostApplicationServices().workingDatabase()
-        model = Db.BlockTableRecord(db.modelSpaceId(), Db.OpenMode.ForWrite)
-
         ##### line test #######
         # lines = MkTunnel()
         # lines.addLine(MkLine(Ge.Point3d(0, 0, 0), Ge.Point3d(1000, 0, 0)))
         # lines.addLine(MkLine(Ge.Point3d(1000, 0, 0), Ge.Point3d(1000, 1000, 0)))
         # lines.addLine(MkLine(Ge.Point3d(1000, 1000, 0), Ge.Point3d(0, 1000, 0)))
         # # lines.addLine(MkLine(Ge.Point3d(0, 1000, 0), Ge.Point3d(0, 0, 0)))
-        # lines.buildPoly()
-
+        
+        # lines.buildProfile()
         tunnel = MkTunnel()
         tp = tunnel.Profile
         df = pd.read_csv('tp_c1.csv')
@@ -475,77 +428,12 @@ def PyRxCmd_tutst():
             tp.addArc(MkArc(cen,norm,ref,rad,sang,eang))
         
         # print(df)
-        tp.Color.setRGB(255,0,255)
-        tp.buildPoly()
-        tp.appendDb(model)
+        tp.buildProfile()
 
-        # tunnel.addLine(MkLine(Ge.Point3d(-1000, 1000, 0), Ge.Point3d( 1000, 1000, 0)))
-        # tunnel.addLine(MkLine(Ge.Point3d( 1000, 1000, 0), Ge.Point3d( 1000, 3000, 0)))
-        # tunnel.addLine(MkLine(Ge.Point3d( 1000, 3000, 0), Ge.Point3d(-1000, 3000, 0)))
-        # tunnel.addLine(MkLine(Ge.Point3d(-1000, 3000, 0), Ge.Point3d(-1000, 1000, 0)))
-
-        lines = []
-        lines.append([-1000,1000,1000,1000])
-        lines.append([ 1000,1000,1000,3000])
-        lines.append([ 1000,3000,-1000,3000])
-        lines.append([-1000,3000,-1000,1000])
-
-        for i in range(1,4):
-            lines.append([-1000-i*900,1000,-1000-i*900,3000])
-            lines.append([ 1000+i*900,1000, 1000+i*900,3000])
-
-        for i in range(1,5) :  
-            y = 3000+i*800
-            x = math.sqrt((5500-800)**2-(y-2550)**2) - 850 
-            lines.append([-x,3000+i*800, x,3000+i*800])
-            
-
-        for l in lines:
-            line = MkLine(Ge.Point3d(l[0],l[1],0), Ge.Point3d(l[2],l[3],0))
-            tunnel.addLine(line)
-            pnts = line.measure(600)
-            for p in pnts:
-                bh = MkCircle(Ge.Point3d(p[0],p[1],0),Ge.Vector3d(0,0,1),Ge.Vector3d(1,0,0),50)
-                bh.Color.setRGB(0,255,0)
-                tunnel.addBlasthole(bh)
-
-        arcs = []
-
-        for i in range(len(df)):
-            cen_x,cen_y = df.iloc[i,3],df.iloc[i,4]
-            cen = Ge.Point3d(df.iloc[i,3],df.iloc[i,4],0)
-            norm = Ge.Vector3d(0, 0, 1)
-            ref=Ge.Vector3d(1, 0, 0)
-            rad = df.iloc[i,5]-50
-            sang = df.iloc[i,6]*3.14159/180
-            eang = df.iloc[i,7]*3.14159/180
-            arcs.append([cen,norm,ref,rad,sang,eang])
-
-        for i in range(len(df)-1):
-            cen_x,cen_y = df.iloc[i,3],df.iloc[i,4]
-            cen = Ge.Point3d(df.iloc[i,3],df.iloc[i,4],0)
-            norm = Ge.Vector3d(0, 0, 1)
-            ref=Ge.Vector3d(1, 0, 0)
-            rad = df.iloc[i,5]-850
-            sang = df.iloc[i,6]*3.14159/180
-            eang = df.iloc[i,7]*3.14159/180
-            arcs.append([cen,norm,ref,rad,sang,eang])
-
-        for i,a in enumerate(arcs):
-            print(f'i {i}')
-            cen,norm,ref,rad,sang,eang = a
-            arc = MkArc(cen,norm,ref,rad,sang,eang)
-            arc.Color.setRGB(255,255,0)
-            pnts = arc.measure(600)
-            print(f'{i}-th pnts = {pnts}')
-            for p in pnts:
-                bh = MkCircle(Ge.Point3d(p[0],p[1],0),Ge.Vector3d(0,0,1),Ge.Vector3d(1,0,0),50)
-                bh.Color.setRGB(0,255,0)
-                tunnel.addBlasthole(bh)
-            tunnel.addArc(arc)
-        
-        tunnel.appendDb(model)
-
+        tunnel.addLine(MkLine(Ge.Point3d(-1000, 0, 0), Ge.Point3d(1000, 0, 0)))
+        tunnel.addLine(MkLine(Ge.Point3d(-1000, 500, 0), Ge.Point3d(1000, 500, 0)))
+        tunnel.addLine(MkLine(Ge.Point3d(-1000, 1000, 0), Ge.Point3d(1000, 1000, 0)))
+        tunnel.appendDb()
     except Exception as err:
         print(err)
 
