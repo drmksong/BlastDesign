@@ -79,6 +79,7 @@ class MkBlastHole(MkCircle):
         self.ExplosiveTypes = [] # list of enumExplosiveType [enumExplosiveType, enumExplosiveType, ...]
         self.ChargeWeights = ExplosiveDict() # list of charge weights of different explosive types
         self.DetonatorType = enumDetonatorType.NoneDetonator # enumDetonatorType 
+        self.DetonatorDelay = 0.0
         self.ParentChargeCurve = MkChargeCurve() # master line of the blast hole
         self.TotalLength = 0.0 # total length of the blast hole
         self.TampingLength = 0.0 # tamping length of the blast hole
