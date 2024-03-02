@@ -1,3 +1,4 @@
+# this library contains the basic classes, MkPoint, MkCircle, MkArc, MkLine, MkPolyLine and functions for the PyRxCAD
 import PyRx as Rx
 import PyGe as Ge
 import PyGi as Gi
@@ -6,6 +7,7 @@ import PyAp as Ap
 import PyEd as Ed
 import math
 import pandas as pd
+from enum import Enum
 
 
 def OnPyInitApp():
@@ -23,6 +25,22 @@ def OnPyLoadDwg():
 def OnPyUnloadDwg():
     print("\nOnPyUnloadDwg")
 
+class MkPoint():  # Ge.Point3d and MkPoint, keep it simple where to use these classes, MkPoint will be used for the point temporary for non-cad operations
+    def __init__(self, x=0, y=0, z=0):
+        self.X = x
+        self.Y = y
+        self.Z = z
+
+    def __getitem__(self, key):
+        if key == 0:
+            return self.X
+        elif key == 1:
+            return self.Y
+        elif key == 2:
+            return self.Z
+        else:
+            return None
+        
 class MkCircle():
     def __init__(self,cen=Ge.Point3d(0, 0, 0),norm=Ge.Vector3d(0, 0, 1),ref=Ge.Vector3d(1, 0, 0),rad=1000):
         self.Center = cen
@@ -327,233 +345,6 @@ class MkPolyLine():
                 l.appendDb(model)
         model.appendAcDbEntity(self.Polyline)
 
-
-class MkTunnelProfile(MkPolyLine): 
-    def __init__(self):
-        super().__init__()
-        self.Center = Ge.Point3d(0, 0, 0)
-
-    def setCenter(self, c:Ge.Point3d): # TODO: delete it if it is not necessary
-        self.Center = c
-
-    def buildTunnel(self):
-        try:
-            # get the working database, database is also a property of Document
-            db = Db.HostApplicationServices().workingDatabase()
-            model = Db.BlockTableRecord(db.modelSpaceId(), Db.OpenMode.ForWrite)
-
-            mkpl = MkPolyLine()
-
-            # create a Polyline
-            self.Polyline = Db.Polyline()
-
-            pnts = [
-                (5194.2024 ,    0.0000),
-                (4936.3448 , 5349.1272),
-                (-4936.3448, 5349.1272),
-                (-5194.2024,    0.0000),
-            ]  
-
-            gepnts = [Ge.Point2d(x,y) for x,y in pnts]
-
-            cen = [(-129.9038,2424.1272 ),
-                (   0.0000,2499.1272 ),
-                ( 129.9038,2424.1272 ),
-                (   0.0000,53646.3183)
-            ]
-
-            rad = [5850.0000,
-                5700.0000,
-                5850.0000,
-                53897.1911
-            ]
-
-            cirs = [MkArc(Ge.Point3d(c[0],c[1],0),Ge.Vector3d(0,0,1),Ge.Vector3d(1,0,0),r,0,3.14159*2) for c,r in zip(cen,rad)]
-            for c in cirs:          
-                c.appendDb(model)
-
-            ang = []
-            for i, c in enumerate(cen):
-                s = pnts[i]
-                e = pnts[(i+1)%4]
-                v1 = Ge.Vector2d(s[0]-c[0],s[1]-c[1])
-                v2 = Ge.Vector2d(s[0]-e[0],s[1]-e[1])
-                ang.append(v1.angleTo(v2))
-            print(ang)
-
-            # verge is necessary to present arc of the tunnel profile 
-            verge = [math.tan(math.pi/2+a) if a > math.pi/2 else math.tan((math.pi/2-a)/2) for a in ang]
-            print(verge)
-
-            self.Polyline.setDatabaseDefaults()
-            self.Polyline.addVertexAt(0,gepnts[0], verge[0], 0, 0)
-            self.Polyline.addVertexAt(1,gepnts[1], verge[1], 0, 0)
-            self.Polyline.addVertexAt(2,gepnts[2], verge[2], 0, 0)
-            self.Polyline.addVertexAt(3,gepnts[3], verge[3], 0, 0)
-            self.Polyline.setClosed(True)
-
-            #zero based
-            # self.Polyline.addVertexAt(0, Ge.Point2d(-1732.0508, -1000),0.09535,0,0)
-            # self.Polyline.addVertexAt(1, Ge.Point2d(1732.0508, -1000),0.372852577,0,0)
-            # # self.Polyline.addVertexAt(3, Ge.Point2d(-800, -600))
-            # self.Polyline.setClosed(True)
-
-            # set a color
-            color = Db.Color()
-            color.setRGB(255, 0, 255)
-            self.Polyline.setColor(color)
-
-            # open modelspace for write and add the entity
-
-            model.appendAcDbEntity(self.Polyline)
-
-            # python garbage collects here, circle and model will be closed or deleted
-            # here    
-        except Exception as err:
-            print(err)
-
-class MkBlastLine(MkLine):
-    pass
-
-class MkBlastArc(MkArc):    
-    pass
-
-class MkTunnel():
-    def __init__(self):
-        self.Profile = MkTunnelProfile()
-        self.Lines = [] # list of MkLine
-        self.Arcs = [] # list of MkArc
-        self.Blasthole = [] # list of MkCircle
-        
-    def addBlasthole(self,bh:MkCircle):
-        self.Blasthole.append(bh)
-
-    def addLine(self,l:MkLine):
-        self.Lines.append(l)
-
-    def addArc(self, a:MkArc):
-        self.Arcs.append(a)
-
-    def appendDb(self,model:Db.BlockTableRecord,debug=False):
-        for a in self.Arcs:
-            if debug: print(a)
-            a.appendDb(model)
-        for l in self.Lines:
-            if debug: print(l)
-            l.appendDb(model)
-        for bh in self.Blasthole:
-            if debug: print(bh)
-            bh.appendDb(model)
-
-
-
-def PyRxCmd_tutst():
-    try:
-        db = Db.HostApplicationServices().workingDatabase()
-        model = Db.BlockTableRecord(db.modelSpaceId(), Db.OpenMode.ForWrite)
-
-        ##### line test #######
-        # lines = MkTunnel()
-        # lines.addLine(MkLine(Ge.Point3d(0, 0, 0), Ge.Point3d(1000, 0, 0)))
-        # lines.addLine(MkLine(Ge.Point3d(1000, 0, 0), Ge.Point3d(1000, 1000, 0)))
-        # lines.addLine(MkLine(Ge.Point3d(1000, 1000, 0), Ge.Point3d(0, 1000, 0)))
-        # # lines.addLine(MkLine(Ge.Point3d(0, 1000, 0), Ge.Point3d(0, 0, 0)))
-        # lines.buildPoly()
-
-        tunnel = MkTunnel()
-        tp = tunnel.Profile
-        df = pd.read_csv('tp_c1.csv')
-        # iloc[row, column]
-        # column - 0:pnt_x, 1:pnt_y, 2:verge, 3:cen_x, 4:cen_y, 5:rad, 6:sang, 7:eang
-        # print(df.iloc[0,0],df.iloc[0,1],df.iloc[0,2],df.iloc[0,3],df.iloc[0,4])
-        for i in range(len(df)):
-            # sum = 3*df['pnt_y'] 
-            # print(f'sum = {sum}\n')
-            ## cen=Ge.Point3d(0, 0, 0),norm=Ge.Vector3d(0, 0, 1),ref=Ge.Vector3d(1, 0, 0),rad=1000,start=0,end=2*3.141592
-            cen_x,cen_y = df.iloc[i,3],df.iloc[i,4]
-            cen = Ge.Point3d(df.iloc[i,3],df.iloc[i,4],0)
-            norm = Ge.Vector3d(0, 0, 1)
-            ref=Ge.Vector3d(1, 0, 0)
-            rad = df.iloc[i,5]
-            sang = df.iloc[i,6]*3.14159/180
-            eang = df.iloc[i,7]*3.14159/180
-            # print(f'cen = ({cen_x},{cen_y}), rad = {rad}, sang = {sang}, eang = {eang}')
-            tp.addArc(MkArc(cen,norm,ref,rad,sang,eang))
-        
-        # print(df)
-        tp.Color.setRGB(255,0,255)
-        tp.buildPoly()
-        tp.appendDb(model)
-
-        # tunnel.addLine(MkLine(Ge.Point3d(-1000, 1000, 0), Ge.Point3d( 1000, 1000, 0)))
-        # tunnel.addLine(MkLine(Ge.Point3d( 1000, 1000, 0), Ge.Point3d( 1000, 3000, 0)))
-        # tunnel.addLine(MkLine(Ge.Point3d( 1000, 3000, 0), Ge.Point3d(-1000, 3000, 0)))
-        # tunnel.addLine(MkLine(Ge.Point3d(-1000, 3000, 0), Ge.Point3d(-1000, 1000, 0)))
-
-        lines = []
-        lines.append([-1000,1000,1000,1000])
-        lines.append([ 1000,1000,1000,3000])
-        lines.append([ 1000,3000,-1000,3000])
-        lines.append([-1000,3000,-1000,1000])
-
-        for i in range(1,4):
-            lines.append([-1000-i*900,1000,-1000-i*900,3000])
-            lines.append([ 1000+i*900,1000, 1000+i*900,3000])
-
-        for i in range(1,5) :  
-            y = 3000+i*800
-            x = math.sqrt((5500-800)**2-(y-2550)**2) - 850 
-            lines.append([-x,3000+i*800, x,3000+i*800])
-            
-
-        for l in lines:
-            line = MkLine(Ge.Point3d(l[0],l[1],0), Ge.Point3d(l[2],l[3],0))
-            tunnel.addLine(line)
-            pnts = line.measure(600)
-            for p in pnts:
-                bh = MkCircle(Ge.Point3d(p[0],p[1],0),Ge.Vector3d(0,0,1),Ge.Vector3d(1,0,0),50)
-                bh.Color.setRGB(0,255,0)
-                tunnel.addBlasthole(bh)
-
-        arcs = []
-
-        for i in range(len(df)):
-            cen_x,cen_y = df.iloc[i,3],df.iloc[i,4]
-            cen = Ge.Point3d(df.iloc[i,3],df.iloc[i,4],0)
-            norm = Ge.Vector3d(0, 0, 1)
-            ref=Ge.Vector3d(1, 0, 0)
-            rad = df.iloc[i,5]-50
-            sang = df.iloc[i,6]*3.14159/180
-            eang = df.iloc[i,7]*3.14159/180
-            arcs.append([cen,norm,ref,rad,sang,eang])
-
-        for i in range(len(df)-1):
-            cen_x,cen_y = df.iloc[i,3],df.iloc[i,4]
-            cen = Ge.Point3d(df.iloc[i,3],df.iloc[i,4],0)
-            norm = Ge.Vector3d(0, 0, 1)
-            ref=Ge.Vector3d(1, 0, 0)
-            rad = df.iloc[i,5]-850
-            sang = df.iloc[i,6]*3.14159/180
-            eang = df.iloc[i,7]*3.14159/180
-            arcs.append([cen,norm,ref,rad,sang,eang])
-
-        for i,a in enumerate(arcs):
-            print(f'i {i}')
-            cen,norm,ref,rad,sang,eang = a
-            arc = MkArc(cen,norm,ref,rad,sang,eang)
-            arc.Color.setRGB(255,255,0)
-            pnts = arc.measure(600)
-            print(f'{i}-th pnts = {pnts}')
-            for p in pnts:
-                bh = MkCircle(Ge.Point3d(p[0],p[1],0),Ge.Vector3d(0,0,1),Ge.Vector3d(1,0,0),50)
-                bh.Color.setRGB(0,255,0)
-                tunnel.addBlasthole(bh)
-            tunnel.addArc(arc)
-        
-        tunnel.appendDb(model)
-
-    except Exception as err:
-        print(err)
 
 def PyRxCmd_libtst():
     try:

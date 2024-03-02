@@ -1,3 +1,5 @@
+# obsolete replaced with mktunnel, mkblast and lib, disregard this file
+
 import PyRx as Rx
 import PyGe as Ge
 import PyGi as Gi

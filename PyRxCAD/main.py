@@ -1,3 +1,5 @@
+# this main file will be revised after mktunnel, mkblast and lib are completed
+
 import PyRx as Rx
 import PyGe as Ge
 import PyGi as Gi

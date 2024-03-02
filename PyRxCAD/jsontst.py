@@ -1,3 +1,8 @@
+# disregard this file, it is for testing purposes only
+
+# Obsoleted: Yes
+# Throw away file
+
 import PyRx as Rx
 import PyGe as Ge
 import PyGi as Gi
