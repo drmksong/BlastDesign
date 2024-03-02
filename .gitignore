@@ -6,3 +6,4 @@ recording
 *.zip
 .DS_Store
 *.dwl*
+*.bak*
