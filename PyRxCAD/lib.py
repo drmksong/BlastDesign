@@ -30,6 +30,7 @@ class MkPoint():  # Ge.Point3d and MkPoint, keep it simple where to use these cl
         self.X = x
         self.Y = y
         self.Z = z
+        self.Type = 'MkPoint'
 
     def __getitem__(self, key):
         if key == 0:
@@ -40,7 +41,8 @@ class MkPoint():  # Ge.Point3d and MkPoint, keep it simple where to use these cl
             return self.Z
         else:
             return None
-        
+
+
 class MkCircle():
     def __init__(self,cen=Ge.Point3d(0, 0, 0),norm=Ge.Vector3d(0, 0, 1),ref=Ge.Vector3d(1, 0, 0),rad=1000):
         self.Center = cen
@@ -49,6 +51,7 @@ class MkCircle():
         self.Radius = rad
         self.Circle = Db.Arc()
         self.Color = Db.Color()
+        self.Type = 'MkCircle'
     
     def setRadius(self, r:float):
         self.Radius = r
@@ -94,6 +97,7 @@ class MkCircle():
         self.convDb()
         model.appendAcDbEntity(self.Circle)
 
+
 class MkArc(MkCircle):
     def __init__(self,cen=Ge.Point3d(0, 0, 0),norm=Ge.Vector3d(0, 0, 1),ref=Ge.Vector3d(1, 0, 0),rad=1000,start=0,end=2*3.141592):
         super().__init__(cen,norm,ref,rad)
@@ -107,6 +111,7 @@ class MkArc(MkCircle):
         a=(v1.angleTo(v2))
         self.Verge = math.tan(math.pi/2+a) if a > math.pi/2 else math.tan((math.pi/2-a)/2)
         self.Arc = Db.Arc()
+        self.Type = 'MkArc'
     
     def setRadius(self, r:float):
         super().setRadius(r)
@@ -164,6 +169,7 @@ class MkLine():
         self.Length = self.Start.distanceTo(self.End)
         self.Line = Db.Line()
         self.Color = Db.Color()
+        self.Type = 'MkLine'
 
     def setStart(self, s:Ge.Point3d):
         self.Start = s
@@ -242,15 +248,16 @@ class MkLine():
 
 
 class MkPolyLine():
-    def __init__(self):
+    def __init__(self,pnts:list=[]):
         # self.Center = Ge.Point3d(0, 0, 0)
         self.Arcs = []
         self.Lines = []
         self.Polyline = Db.Polyline()
-        self.pnts = []
-        self.rads = []
-        self.verges = []
+        self.pnts = pnts
+        self.rads = [0 for i in range(len(pnts))]
+        self.verges = [0 for i in range(len(pnts))]
         self.Color = Db.Color()
+        self.Type = 'MkPolyLine'
 
         
     def addArc(self,a:MkArc):
@@ -324,7 +331,8 @@ class MkPolyLine():
 
             self.Polyline.setDatabaseDefaults()
             for i in range(len(self.pnts)):
-                self.Polyline.addVertexAt(i,self.pnts[i], self.verges[i], 0, 0)
+                # self.Polyline.addVertexAt(i,self.pnts[i], self.verges[i], 0, 0)
+                self.Polyline.addVertexAt(i,gepnts[i], self.verges[i], 0, 0)
             self.Polyline.setClosed(True)
 
             # color = Db.Color()
@@ -365,10 +373,12 @@ def PyRxCmd_libtst():
         l3mk.trimEdge(10)
         l4mk = l3mk.offset(10,1)
 
-        l1mk.appendDb(model)
-        l2mk.appendDb(model)
-        l3mk.appendDb(model)
-        l4mk.appendDb(model)
+        # l1mk.appendDb(model)
+        # l2mk.appendDb(model)
+        # l3mk.appendDb(model)
+        # l4mk.appendDb(model)
+
+        print(f'l1mk.Type = {l1mk.Type}, l2mk.Type = {l2mk.Type}, l3mk.Type = {l3mk.Type}, l4mk.Type = {l4mk.Type}')
 
         mes = l2mk.measure(7.0)
         for m in mes:
@@ -380,8 +390,8 @@ def PyRxCmd_libtst():
         cirs = [MkArc(c,norm,ref,rad) for c in cen]
 
         # print(cirs)
-        for c in cirs:
-            c.appendDb(model)
+        # for c in cirs:
+        #     c.appendDb(model)
 
         # rad = 100
         # cen = Ge.Point3d(0,-200,0)
@@ -392,8 +402,20 @@ def PyRxCmd_libtst():
 
         # tun2.setRadius(90)
 
-        MkPolyLine([Ge.Point3d(0,0,0),Ge.Point3d(100,0,0),Ge.Point3d(100,100,0),Ge.Point3d(0,100,0),Ge.Point3d(0,0,0)]).appendDb(model)
-        MkTunnel().appendDb(model)
+        pl = MkPolyLine([Ge.Point3d(0,0,0),Ge.Point3d(1000,0,0),Ge.Point3d(1000,1000,0),Ge.Point3d(0,1000,0),Ge.Point3d(0,0,0)])
+        # l1 = MkLine(Ge.Point3d(0,0,0),Ge.Point3d(1000,0,0))
+        # l2 = MkLine(Ge.Point3d(1000,0,0),Ge.Point3d(1000,1000,0))
+        # l3 = MkLine(Ge.Point3d(1000,1000,0),Ge.Point3d(0,1000,0))
+        # l4 = MkLine(Ge.Point3d(0,1000,0),Ge.Point3d(0,0,0))
+        # pl = MkPolyLine()
+        # pl.addLine(l1)
+        # pl.addLine(l2)
+        # pl.addLine(l3)
+        # pl.addLine(l4)
+
+        pl.buildPoly()
+        pl.appendDb(model)
+        ## MkTunnel().appendDb(model)
 
         # mes = tun2.measure(10.0)
         # print(mes)
