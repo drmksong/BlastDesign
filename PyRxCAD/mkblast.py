@@ -54,7 +54,7 @@ class enumBlastHoleType(Enum):
         else:
             return True
 
-class BlastHoleTypeDict(dict): # dictionary of blast hole enum types and their string literals
+class BlastHoleTypeDict(dict): # dictionary of blast hole enum types and their string literals, need to revise for checking cut hole should be cut hole and stopping hole should be stopping hole
     def __setitem__(self, __key: Any, __value: Any) -> None:
         if len(self) ==0 and enumBlastHoleType.is_BlastHole(__key) and \
           (enumCutHoleType.is_CutHole(__value) or \
