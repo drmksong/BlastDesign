@@ -211,7 +211,7 @@ class MkBlastHole(MkCircle):
         self.BlastHoleType = BlastHoleTypeDict() # enumBlastHoleType ex {"HoleType":enumCutHoleType.EmptyHole}
         # self.CutHoleType = "" # valid only if self.BlastHoleType is CutHole
         # self.StoppingHoleType = "" # valid only if self.BlastHoleType is StoppingHole
-        self.ExplosiveTypes = [] # list of enumExplosiveType [enumExplosiveType, enumExplosiveType, ...]
+        self.ExplosiveTypes = [] # list of enumExplosiveType [enumExplosiveType.Emulsion, enumExplosiveType.Finex, ...]
         self.ChargeWeights = ExplosiveDict() # list of charge weights of different explosive types
         self.Detonators = DetonatorDict() # dictionary of detonators of different types
         # self.DetonatorType = enumDetonatorType.NoneDetonator # enumDetonatorType 
